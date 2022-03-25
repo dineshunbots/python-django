@@ -134,14 +134,14 @@ import random
 # In[24]:
 
 
-for i in range (len(support)):
-   support[i] = support[i] + 0.0025 * (random.randint(1,10) - 5) 
-   confidence[i] = confidence[i] + 0.0025 * (random.randint(1,10) - 5)
+# for i in range (len(support)):
+#    support[i] = support[i] + 0.0025 * (random.randint(1,10) - 5) 
+#    confidence[i] = confidence[i] + 0.0025 * (random.randint(1,10) - 5)
  
-plt.scatter(support, confidence,   alpha=0.5, marker="o")
-plt.xlabel('support')
-plt.ylabel('confidence') 
-plt.show()
+# plt.scatter(support, confidence,   alpha=0.5, marker="o")
+# plt.xlabel('support')
+# plt.ylabel('confidence') 
+# plt.show()
 
 
 # In[25]:
@@ -195,11 +195,11 @@ rules = association_rules(frequent_itemsets, metric = 'confidence',
 coords = rules_to_coordinates(rules.head(40))
 
 # Generate parallel coordinates plot
-plt.figure(figsize=(4,8))
-parallel_coordinates(coords, 'rule')
-plt.legend([])
-plt.grid(True)
-plt.show()
+# plt.figure(figsize=(4,8))
+# parallel_coordinates(coords, 'rule')
+# plt.legend([])
+# plt.grid(True)
+# plt.show()
 
 
 # In[30]:
@@ -209,20 +209,20 @@ rules = association_rules(frequent_itemsets, metric='support',
                           min_threshold = 0.0)
 
 # Generate scatterplot using support and confidence
-plt.figure(figsize=(10,6))
-sns.scatterplot(x = "support", y = "confidence", data = rules)
-plt.margins(0.01,0.01)
-plt.show()
+# plt.figure(figsize=(10,6))
+# sns.scatterplot(x = "support", y = "confidence", data = rules)
+# plt.margins(0.01,0.01)
+# plt.show()
 
 
 # In[31]:
 
 
-plt.figure(figsize=(10,6))
-sns.scatterplot(x = "support", y = "confidence", 
-                size = "lift", data = rules)
-plt.margins(0.01,0.01)
-plt.show()
+# plt.figure(figsize=(10,6))
+# sns.scatterplot(x = "support", y = "confidence", 
+#                 size = "lift", data = rules)
+# plt.margins(0.01,0.01)
+# plt.show()
 
 
 # In[32]:
@@ -245,12 +245,12 @@ coords = rules_to_coordinates(rules.head(40))
 
     # Generate parallel coordinates plot
     
-fig=px.parallel_coordinates(rules, ['antecedents', 'consequents'] )
+#fig=px.parallel_coordinates(rules, ['antecedents', 'consequents'] )
 #parallel_coordinates(coords, 'rule')
 #px.legend([])
 #px.grid(True)
 #px.title(' parallel coordinates to visualize rules', fontsize=15,color="blue")
-fig.show()
+#fig.show()
 
 
 # In[ ]:
@@ -269,26 +269,26 @@ rules
 
 
 import plotly.express as px
-df = px.data.iris()
-fig = px.parallel_coordinates(rules.head(20), color="confidence", labels={"antecedentSupport": "antecedentSupport",
-                "consequentSupport": "consequentSupport", "support": "support",
-                "lift":"lift", "levarage":"levarage", "conviction": "conviction" },
-                             color_continuous_scale=px.colors.diverging.Tealrose,
-                             color_continuous_midpoint=1)
-fig.show()
+# df = px.data.iris()
+# fig = px.parallel_coordinates(rules.head(20), color="confidence", labels={"antecedentSupport": "antecedentSupport",
+#                 "consequentSupport": "consequentSupport", "support": "support",
+#                 "lift":"lift", "levarage":"levarage", "conviction": "conviction" },
+#                              color_continuous_scale=px.colors.diverging.Tealrose,
+#                              color_continuous_midpoint=1)
+#fig.show()
 #antecedent,support,consequent,support,support,confidence,lift,leverage,conviction
 
 
 # In[218]:
 
 
-plt.rcParams['figure.figsize'] = (10,6)
-color = plt.cm.inferno(np.linspace(0,1,20))
-rules['antecedents'].value_counts().head(20).plot.bar(color = color)
-plt.title('Top 20 Most Frequent Items')
-plt.ylabel('Counts')
-plt.xlabel('Items')
-plt.show()
+# plt.rcParams['figure.figsize'] = (10,6)
+# color = plt.cm.inferno(np.linspace(0,1,20))
+# rules['antecedents'].value_counts().head(20).plot.bar(color = color)
+# plt.title('Top 20 Most Frequent Items')
+# plt.ylabel('Counts')
+# plt.xlabel('Items')
+#plt.show()
 
 # Authentication
 class AuthLockScrren(LoginRequiredMixin,TemplateView):
@@ -328,7 +328,7 @@ def test(request):
     plt.xlabel('support')
     plt.ylabel('confidence') 
    
-    #plt.show()
+    #plt.show() 
 
     flike = io.BytesIO()
     plt.savefig(flike)
