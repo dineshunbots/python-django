@@ -1,1 +1,1 @@
-web gunicorn python-django.wsgi
+web: gunicorn upzet.wsgi --log-file -
