@@ -1,1 +1,1 @@
-web: upzet.settings.wsgi
+web: upzet.wsgi
