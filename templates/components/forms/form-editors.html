@@ -1,0 +1,74 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block title %}Form Editors{% endblock title %}
+{% block extra_css %}
+        <!-- quill css -->
+        <link href="{% static 'libs/quill/dist/quill.core.css' %}" rel="stylesheet" type="text/css" />
+        <link href="{% static 'libs/quill/dist/quill.snow.css' %}" rel="stylesheet" type="text/css" />
+{% endblock extra_css %}
+{% block content %}
+                <div class="page-content">
+                    <div class="container-fluid">
+
+                        <!-- start page title -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                                    <h4 class="mb-sm-0">Form Editors</h4>
+
+                                    <div class="page-title-right">
+                                        <ol class="breadcrumb m-0">
+                                            <li class="breadcrumb-item"><a href="javascript: void(0);">Forms</a></li>
+                                            <li class="breadcrumb-item active">Form Editors</li>
+                                        </ol>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end page title -->
+
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+        
+                                        <h4 class="card-title">Forms Editors</h4>
+                                        <p class="card-title-desc">Your powerful rich text editor</p>
+        
+                                        <div id="email-editor" style="height: 300px;">
+                                            <h3><span class="ql-size-large">Hello World!</span></h3>
+                                            <p><br></p>
+                                            <h3>This is an simple editable area.</h3>
+                                            <p><br></p>
+                                            <ul>
+                                                <li>
+                                                    Select a text to reveal the toolbar.
+                                                </li>
+                                                <li>
+                                                    Edit rich document on-the-fly, so elastic!
+                                                </li>
+                                            </ul>
+                                            <p><br></p>
+                                            <p>
+                                                End of simple area
+                                            </p>
+    
+                                        </div> <!-- end email-editor-->
+        
+                                    </div>
+                                </div>
+                            </div> <!-- end col -->
+                        </div> <!-- end row -->
+
+                    </div> <!-- container-fluid -->
+                </div>
+                <!-- End Page-content -->
+{% endblock content %}
+{% block extra_javascript %}
+        <!--Quill js-->
+        <script src="{% static 'libs/quill/dist/quill.min.js' %}"></script>
+
+        <!-- init js -->
+        <script src="{% static 'js/pages/form-editor.init.js' %}"></script>
+{% endblock extra_javascript %}

@@ -1,0 +1,227 @@
+{% load static %}
+
+{% block sidebar %}
+            <!-- ========== Left Sidebar Start ========== -->
+            <div class="vertical-menu">
+
+                <div data-simplebar class="h-100">
+
+                    <!--- Sidemenu -->
+                    <div id="sidebar-menu">
+                        <!-- Left Menu Start -->
+                        <ul class="metismenu list-unstyled" id="side-menu">
+                            <li class="menu-title">Menu</li>
+
+                            <li>
+                                <a href="{% url 'dashboard' %}" class="waves-effect">
+                                    <i class="mdi mdi-home-variant-outline"></i><span
+                                        class="badge rounded-pill bg-primary float-end">3</span>
+                                    <span>Dashboard</span>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="{% url 'calendar' %}" class=" waves-effect">
+                                    <i class="mdi mdi-calendar-outline"></i>
+                                    <span>Calendar</span>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                    <i class="mdi mdi-email-outline"></i>
+                                    <span>Email</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="false">
+                                    <li><a href="{% url 'email-inbox' %}">Inbox</a></li>
+                                    <li><a href="{% url 'email-read' %}">Read Email</a></li>
+                                    <li><a href="{% url 'email-compose' %}">Email Compose</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="menu-title">Layouts</li>
+
+                            <li>
+                                <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                    <i class="mdi mdi-gradient"></i>
+                                    <span>Vertical</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="false">
+                                    <li><a href="{% url 'vertical-light-sidebar' %}">Light Sidebar</a></li>
+                                    <li><a href="{% url 'vertical-compact-sidebar' %}">Compact Sidebar</a></li>
+                                    <li><a href="{% url 'vertical-icon-sidebar' %}">Icon Sidebar</a></li>
+                                    <li><a href="{% url 'vertical-boxed' %}">Boxed Layout</a></li>
+                                </ul>
+                            </li>
+
+                            <li>
+                                <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                    <i class="mdi mdi-page-layout-header"></i>
+                                    <span>Horizontal</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="false">
+                                    <li><a href="{% url 'horizontal' %}">Default</a></li>
+                                    <li><a href="{% url 'horizontal-hori-topdark' %}">Topbar Dark</a></li>
+                                    <li><a href="{% url 'horizontal-hori-boxed' %}">Boxed width</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="menu-title">Pages</li>
+
+                            <li>
+                                <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                    <i class="mdi mdi-account-circle-outline"></i>
+                                    <span>Authentication</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="false">
+                                    <li><a href="{% url 'auth-login' %}">Login</a></li>
+                                    <li><a href="{% url 'auth-register' %}">Register</a></li>
+                                    <li><a href="{% url 'auth-recoverpw' %}">Recover Password</a></li>
+                                    <li><a href="{% url 'auth-lock-screen' %}">Lock Screen</a></li>
+                                </ul>
+                            </li>
+
+                            <li>
+                                <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                    <i class="mdi mdi-format-page-break"></i>
+                                    <span>Utility</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="false">
+                                    <li><a href="{% url 'starter' %}">Starter Page</a></li>
+                                    <li><a href="{% url 'maintenance' %}">Maintenance</a></li>
+                                    <li><a href="{% url 'comingsoon' %}">Coming Soon</a></li>
+                                    <li><a href="{% url 'timeline' %}">Timeline</a></li>
+                                    <li><a href="{% url 'faqs' %}">FAQs</a></li>
+                                    <li><a href="{% url 'pricing' %}">Pricing</a></li>
+                                    <li><a href="{% url 'error-404' %}">Error 404</a></li>
+                                    <li><a href="{% url 'error-500' %}">Error 500</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="menu-title">Components</li>
+
+                            <li>
+                                <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                    <i class="mdi mdi-briefcase-variant-outline"></i>
+                                    <span>UI Elements</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="false">
+                                    <li><a href="{% url 'ui-alerts' %}">Alerts</a></li>
+                                    <li><a href="{% url 'ui-badge' %}">Badge</a></li>
+                                    <li><a href="{% url 'ui-breadcrumb' %}">Breadcrumb</a></li>
+                                    <li><a href="{% url 'ui-buttons' %}">Buttons</a></li>
+                                    <li><a href="{% url 'ui-cards' %}">Cards</a></li>
+                                    <li><a href="{% url 'ui-carousel' %}">Carousel</a></li>
+                                    <li><a href="{% url 'ui-dropdowns' %}">Dropdowns</a></li>
+                                    <li><a href="{% url 'ui-grid' %}">Grid</a></li>
+                                    <li><a href="{% url 'ui-images' %}">Images</a></li>
+                                    <li><a href="{% url 'ui-lightbox' %}">Lightbox</a></li>
+                                    <li><a href="{% url 'ui-modals' %}">Modals</a></li>
+                                    <li><a href="{% url 'ui-offcanvas' %}">Offcanvas</a></li>
+                                    <li><a href="{% url 'ui-rangeslider' %}">Range Slider</a></li>
+                                    <li><a href="{% url 'ui-session-timeout' %}">Session Timeout</a></li>
+                                    <li><a href="{% url 'ui-pagination' %}">Pagination</a></li>
+                                    <li><a href="{% url 'ui-progressbars' %}">Progress Bars</a></li>
+                                    <li><a href="{% url 'ui-placeholders' %}">Placeholders</a></li>
+                                    <li><a href="{% url 'ui-sweetalert' %}">Sweetalert 2</a></li>
+                                    <li><a href="{% url 'ui-tabs-accordions' %}">Tabs & Accordions</a></li>
+                                    <li><a href="{% url 'ui-typography' %}">Typography</a></li>
+                                    <li><a href="{% url 'ui-toasts' %}">Toasts</a></li>
+                                    <li><a href="{% url 'ui-video' %}">Video</a></li>
+                                    <li><a href="{% url 'ui-popover-tooltips' %}">Popovers &amp; Tooltips</a></li>
+                                    <li><a href="{% url 'ui-rating' %}">Rating</a></li>
+                                </ul>
+                            </li>
+
+                            <li>
+                                <a href="javascript: void(0);" class="waves-effect">
+                                    <i class="ri-eraser-fill"></i>
+                                    <span class="badge rounded-pill bg-danger float-end">8</span>
+                                    <span>Forms</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="false">
+                                    <li><a href="{% url 'form-elements' %}">Form Elements</a></li>
+                                    <li><a href="{% url 'form-validation' %}">Form Validation</a></li>
+                                    <li><a href="{% url 'form-advanced' %}">Form Advanced Plugins</a></li>
+                                    <li><a href="{% url 'form-editors' %}">Form Editors</a></li>
+                                    <li><a href="{% url 'form-uploads' %}">Form File Upload</a></li>
+                                    <li><a href="{% url 'form-xeditable' %}">Form X-editable</a></li>
+                                    <li><a href="{% url 'form-wizard' %}">Form Wizard</a></li>
+                                    <li><a href="{% url 'form-mask' %}">Form Mask</a></li>
+                                </ul>
+                            </li>
+
+                            <li>
+                                <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                    <i class="ri-table-2"></i>
+                                    <span>Tables</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="false">
+                                    <li><a href="{% url 'tables-basic' %}">Basic Tables</a></li>
+                                    <li><a href="{% url 'tables-datatable' %}">Data Tables</a></li>
+                                    <li><a href="{% url 'tables-responsive' %}">Responsive Table</a></li>
+                                    <li><a href="{% url 'tables-editable' %}">Editable Table</a></li>
+                                </ul>
+                            </li>
+
+                            <li>
+                                <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                    <i class="ri-bar-chart-line"></i>
+                                    <span>Charts</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="false">
+                                    <li><a href="{% url 'charts-apex' %}">Apex Charts</a></li>
+                                    <li><a href="{% url 'charts-chartjs' %}">Chartjs Charts</a></li>
+                                    <li><a href="{% url 'charts-flot' %}">Flot Charts</a></li>
+                                    <li><a href="{% url 'charts-knob' %}">Jquery Knob Charts</a></li>
+                                    <li><a href="{% url 'charts-sparkline' %}">Sparkline Charts</a></li>
+                                </ul>
+                            </li>
+
+                            <li>
+                                <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                    <i class="ri-brush-line"></i>
+                                    <span>Icons</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="false">
+                                    <li><a href="{% url 'icons-remix' %}">Remix Icons</a></li>
+                                    <li><a href="{% url 'icons-materialdesign' %}">Material Design</a></li>
+                                    <li><a href="{% url 'icons-dripicons' %}">Dripicons</a></li>
+                                    <li><a href="{% url 'icons-fontawesome' %}">Font Awesome </a></li>
+                                </ul>
+                            </li>
+
+                            <li>
+                                <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                    <i class="ri-map-pin-line"></i>
+                                    <span>Maps</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="false">
+                                    <li><a href="{% url 'maps-google' %}">Google Maps</a></li>
+                                    <li><a href="{% url 'maps-vector' %}">Vector Maps</a></li>
+                                </ul>
+                            </li>
+
+                            <li>
+                                <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                    <i class="ri-share-line"></i>
+                                    <span>Multi Level</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="true">
+                                    <li><a href="javascript: void(0);">Level 1.1</a></li>
+                                    <li><a href="javascript: void(0);" class="has-arrow">Level 1.2</a>
+                                        <ul class="sub-menu" aria-expanded="true">
+                                            <li><a href="javascript: void(0);">Level 2.1</a></li>
+                                            <li><a href="javascript: void(0);">Level 2.2</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- Sidebar -->
+                </div>
+            </div>
+            <!-- Left Sidebar End -->
+{% endblock sidebar %}
+    

@@ -1,0 +1,47 @@
+{% extends 'account/base.html' %}
+{% load static %}
+{% load account %}
+{% load i18n %}
+{% block title %}Confirm Email{% endblock title %}
+{% block content %}
+    
+
+                                    <div class="p-2">
+                                        <div class="text-center mt-3">
+
+                                            <h4 class="font-size-20">{% trans "Confirm Email Address" %}</h4>
+
+                                            {% if confirmation %}
+
+                                            {% user_display confirmation.email_address.user as user_display %}
+
+                                            <p>{% blocktrans with confirmation.email_address.email as email %}Please confirm that <a href="mailto:{{ email }}">{{ email }}</a> is an e-mail address for user <strong>{{ user_display }}</strong>.{% endblocktrans %}</p>
+
+                                            <form method="post" action="{% url 'account_confirm_email' confirmation.key %}">
+                                            {% csrf_token %}
+                                                <button type="submit" class="btn btn-success">{% trans 'Confirm' %}</button>
+                                            </form>
+
+                                            {% else %}
+
+                                            {% url 'account_email' as email_url %}
+
+                                            <p>{% blocktrans %}This e-mail confirmation link expired or is invalid. Please <a href="{{ email_url }}">issue a new e-mail confirmation request</a>.{% endblocktrans %}</p>
+
+                                            {% endif %} 
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-5 text-center">
+                            <p class="text-white-50">© <script>document.write(new Date().getFullYear())</script> Upzet. Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesdesign</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- end row -->
+            </div>
+        </div>
+        <!-- end Account pages -->
+{% endblock content %}
