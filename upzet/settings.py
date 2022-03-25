@@ -34,7 +34,7 @@ SECRET_KEY = 'django-insecure-8s))v3p!c1+wxk=l&3y0a#45g%i%m9s1u@k806pz1=p#r=yz)i
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['127.0.0.1','test-pytho-django.herokuapp.com']
 
 
 # Application definition
