@@ -1,2 +1,2 @@
-web: upzet.wsgi
+web: python-django.wsgi
 heroku ps:scale web=1
