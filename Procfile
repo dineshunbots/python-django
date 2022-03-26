@@ -1,1 +1,1 @@
-web: gunicorn main:manage
+web: upzet.wsgi
