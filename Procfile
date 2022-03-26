@@ -1,1 +1,1 @@
-web: upzet.wsgi
+web: gunicorn upzet.wsgi
