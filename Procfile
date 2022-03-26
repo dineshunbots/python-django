@@ -1,1 +1,1 @@
-web: test-pytho-django.wsgi
+web: upzet.wsgi
