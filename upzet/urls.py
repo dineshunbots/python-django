@@ -34,7 +34,7 @@ urlpatterns = [
     # Email
     path('email/',include('e_mail.urls')),
     # Pages
-    path('pages/',include('pages.urls')),
+    path('',include('pages.urls')),
     #Components
     path('components/',include('components.urls')),
     #Components

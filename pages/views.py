@@ -134,9 +134,9 @@ import random
 # In[24]:
 
 
-# for i in range (len(support)):
-#    support[i] = support[i] + 0.0025 * (random.randint(1,10) - 5) 
-#    confidence[i] = confidence[i] + 0.0025 * (random.randint(1,10) - 5)
+for i in range (len(support)):
+   support[i] = support[i] + 0.0025 * (random.randint(1,10) - 5) 
+   confidence[i] = confidence[i] + 0.0025 * (random.randint(1,10) - 5)
  
 # plt.scatter(support, confidence,   alpha=0.5, marker="o")
 # plt.xlabel('support')
@@ -184,8 +184,8 @@ def rules_to_coordinates(rules):
 from pandas.plotting import parallel_coordinates
 
 # Compute the frequent itemsets
-#frequent_itemsets = apriori(onehot, min_support = 0.15, 
- #                           use_colnames = True, max_len = 2)
+# frequent_itemsets = apriori(onehot, min_support = 0.15, 
+#                            use_colnames = True, max_len = 2)
 
 # Compute rules from the frequent itemsets
 rules = association_rules(frequent_itemsets, metric = 'confidence', 
@@ -237,11 +237,11 @@ from pandas.plotting import parallel_coordinates
     #                           use_colnames = True, max_len = 2)
 
     # Compute rules from the frequent itemsets
-rules = association_rules(frequent_itemsets, metric = 'confidence', 
-                          min_threshold = 0.55)
+#rules = association_rules(frequent_itemsets, metric = 'confidence', 
+#                          min_threshold = 0.55)
 
     # Convert rules into coordinates suitable for use in a parallel coordinates plot
-coords = rules_to_coordinates(rules.head(40))
+#coords = rules_to_coordinates(rules.head(40))
 
     # Generate parallel coordinates plot
     
@@ -275,7 +275,7 @@ import plotly.express as px
 #                 "lift":"lift", "levarage":"levarage", "conviction": "conviction" },
 #                              color_continuous_scale=px.colors.diverging.Tealrose,
 #                              color_continuous_midpoint=1)
-#fig.show()
+# fig.show()
 #antecedent,support,consequent,support,support,confidence,lift,leverage,conviction
 
 
@@ -322,21 +322,86 @@ class Timeline(LoginRequiredMixin,TemplateView):
     template_name = "pages/utility/pages-timeline.html"
 
     
-def test(request):
-    tag="hi"
+def chart1(request):
     plt.scatter(support, confidence,   alpha=0.5, marker="o")
     plt.xlabel('support')
     plt.ylabel('confidence') 
-   
-    #plt.show() 
-
     flike = io.BytesIO()
     plt.savefig(flike)
     b64 = base64.b64encode(flike.getvalue()).decode()
-    return render(request, template_name='pages/utility/pages-starter.html', context={'wind_rose': b64})
-  
-    # context = {
-    #     'num_books': tag,
-    #     'wind_rose': 'wind_rose_image'
-    # }
-    # return render(request, 'pages/utility/pages-starter.html',context=context)
+    plt.close()
+    return render(request, template_name='pages/utility/chart1.html', context={'wind_rose': b64})
+
+def chart2(request):
+    plt.figure(figsize=(8,8))
+    parallel_coordinates(coords, 'rule')
+    plt.legend([])
+    plt.grid(True)
+    flike = io.BytesIO()
+    plt.savefig(flike)
+    b64 = base64.b64encode(flike.getvalue()).decode()
+    plt.close()
+    return render(request, template_name='pages/utility/chart2.html', context={'wind_rose': b64})   
+
+def chart3(request):
+    plt.figure(figsize=(10,6))
+    sns.scatterplot(x = "support", y = "confidence", data = rules)
+    plt.margins(0.01,0.01)
+    flike = io.BytesIO()
+    plt.savefig(flike)
+    b64 = base64.b64encode(flike.getvalue()).decode()
+    plt.close()
+    return render(request, template_name='pages/utility/chart3.html', context={'wind_rose': b64})  
+
+def chart4(request):
+    plt.figure(figsize=(10,6))
+    sns.scatterplot(x = "support", y = "confidence", size = "lift", data = rules)
+    plt.margins(0.01,0.01)
+    flike = io.BytesIO()
+    plt.savefig(flike)
+    b64 = base64.b64encode(flike.getvalue()).decode()
+    plt.close()
+    return render(request, template_name='pages/utility/chart4.html', context={'wind_rose': b64})   
+    
+def chart5(request):
+    
+    plt.rcParams['figure.figsize'] = (10,6)
+    color = plt.cm.inferno(np.linspace(0,1,20))
+    rules['antecedents'].value_counts().head(20).plot.bar(color = color)
+    plt.title('Top 20 Most Frequent Items')
+    plt.ylabel('Counts')
+    plt.xlabel('Items')
+    flike = io.BytesIO()
+    plt.savefig(flike)
+    b64 = base64.b64encode(flike.getvalue()).decode()
+    plt.close()
+    return render(request, template_name='pages/utility/chart5.html', context={'wind_rose': b64}) 
+
+def chart6(request):
+    
+    rules = association_rules(frequent_itemsets, metric = 'confidence',  min_threshold = 0.55)
+    coords = rules_to_coordinates(rules.head(40))  
+    #fig=px.parallel_coordinates(rules, ['antecedents', 'consequents'] )
+    parallel_coordinates(coords, 'rule')
+    plt.legend([])
+    plt.grid(True)
+    plt.title(' parallel coordinates to visualize rules', fontsize=15,color="blue")
+    #fig.show()
+    flike = io.BytesIO()
+    plt.savefig(flike)
+    b64 = base64.b64encode(flike.getvalue()).decode()
+    plt.close()
+    return render(request, template_name='pages/utility/chart6.html', context={'wind_rose': b64}) 
+
+def chart7(request):
+    df = px.data.iris()
+    fig = px.parallel_coordinates(rules.head(20), color="confidence", labels={"antecedentSupport": "antecedentSupport",
+                "consequentSupport": "consequentSupport", "support": "support",
+                "lift":"lift", "levarage":"levarage", "conviction": "conviction" },
+                             color_continuous_scale=px.colors.diverging.Tealrose,
+                             color_continuous_midpoint=1)
+    #fig.show()
+    flike = io.BytesIO()
+    px.savefig(flike)
+    b64 = base64.b64encode(flike.getvalue()).decode()
+    return render(request, template_name='pages/utility/chart7.html', context={'wind_rose': b64}) 

@@ -16,5 +16,11 @@ urlpatterns = [
     path('pricing',views.Pricing.as_view(),name='pricing'),
     path('starter',views.Starter.as_view(),name='starter'),
     path('timeline',views.Timeline.as_view(),name='timeline'),
-    path('test', views.test, name='test'),
+    path('chart1', views.chart1, name='chart1'),
+    path('chart2', views.chart2, name='chart2'),
+    path('chart3', views.chart3, name='chart3'), 
+    path('chart4', views.chart4, name='chart4'),
+    path('chart5', views.chart5, name='chart5'), 
+    path('chart6', views.chart6, name='chart6'), 
+    path('chart7', views.chart7, name='chart7'),  
 ]
