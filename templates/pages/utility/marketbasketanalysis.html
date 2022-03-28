@@ -1,0 +1,98 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block title %}Chart{% endblock title %}
+{% block content %}
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+                <div class="page-content">
+                    <div class="container-fluid">
+
+                        <!-- start page title -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                                    <h4 class="mb-sm-0">charts</h4>
+
+                                    <div class="page-title-right">
+                                        <ol class="breadcrumb m-0">
+                                            <!-- <li class="breadcrumb-item"><a href="javascript: void(0);">Utility</a></li> -->
+                                            <li class="breadcrumb-item active">charts</li>
+                                        </ol>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end page title -->
+
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        
+                                        <img src='data:image/png;base64,{{ wind_rose1 }}'>
+                                    </div>
+                                </div>
+                            </div> <!-- end col -->
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        
+                                        <img src='data:image/png;base64,{{ wind_rose2 }}'>
+                                    </div>
+                                </div>
+                            </div> <!-- end col -->
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        
+                                        <img src='data:image/png;base64,{{ wind_rose3 }}'>
+                                    </div>
+                                </div>
+                            </div> <!-- end col -->
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        
+                                        <img src='data:image/png;base64,{{ wind_rose4 }}'>
+                                    </div>
+                                </div>
+                            </div> <!-- end col -->
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        
+                                        <img src='data:image/png;base64,{{ wind_rose5 }}'>
+                                    </div>
+                                </div>
+                            </div> <!-- end col -->
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        
+                                        <img src='data:image/png;base64,{{ wind_rose6 }}'>
+                                    </div>
+                                </div>
+                            </div> <!-- end col -->
+                        </div>
+
+
+
+
+
+                        
+
+                    </div> <!-- container-fluid -->
+                </div>
+                <!-- End Page-content -->
+{% endblock content %}

@@ -23,4 +23,7 @@ urlpatterns = [
     path('chart5', views.chart5, name='chart5'), 
     path('chart6', views.chart6, name='chart6'), 
     path('chart7', views.chart7, name='chart7'),  
+    path('dashboard', views.dashboard, name='dashboard'),  
+    path('', views.dashboard, name='dashboard'),  
+    path('market-basket-analysis', views.marketbasketanalysis, name='market-basket-analysis'),  
 ]

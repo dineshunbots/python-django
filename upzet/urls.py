@@ -28,7 +28,8 @@ from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.Index.as_view(),name="dashboard"),
+    #path('', views.Index.as_view(),name="dashboard"),
+    #path('', views.Index.as_view(),name="dashboard"),
     path('calendar', views.Calendar.as_view(),name="calendar"),
     path('settings',views.Settings.as_view(),name='settings'),
     # Email
