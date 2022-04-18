@@ -321,7 +321,6 @@ class Starter(LoginRequiredMixin,TemplateView):
 class Timeline(LoginRequiredMixin,TemplateView):
     template_name = "pages/utility/pages-timeline.html"
 
-    
 def chart1(request):
     plt.scatter(support, confidence,   alpha=0.5, marker="o")
     plt.xlabel('support')

@@ -1,5 +1,6 @@
 from django.urls import path
 from pages import views
+from layout import views as layview
 urlpatterns = [
     # Authentication
     path('auth-lock-screen', views.AuthLockScrren.as_view(),name='auth-lock-screen'),
@@ -26,4 +27,5 @@ urlpatterns = [
     path('dashboard', views.dashboard, name='dashboard'),  
     path('', views.dashboard, name='dashboard'),  
     path('market-basket-analysis', views.marketbasketanalysis, name='market-basket-analysis'),  
+    path('market-basket-analysis-api', layview.marketbasketanalysisapi, name='market-basket-analysis-api'),  
 ]
