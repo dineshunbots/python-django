@@ -117,11 +117,13 @@ WSGI_APPLICATION = 'upzet.wsgi.application'
 
 DATABASES = {
     # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'ENGINE': 'django.db.backends.sqlite3,django.db.backends.mysql',
     #     'NAME': BASE_DIR / 'db.sqlite3',
+    # 30 mysqlclient==2.1.0
+    # 40 PyMySQL==1.0.2
     # }
        'default': {  
-        'ENGINE': 'django.db.backends.mysql',  
+        'ENGINE': '',  
         'NAME': 'django',  
         'USER': 'root',  
         'PASSWORD': '',  
