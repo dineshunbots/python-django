@@ -1,3 +1,4 @@
+from tkinter import CENTER
 from django.shortcuts import render
 from django.views.generic.base import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -8,6 +9,7 @@ from apyori import apriori
 import base64
 import io
 import matplotlib.pyplot as plt
+plt.switch_backend('agg')
 import seaborn as sns
 from datetime import datetime
 from mlxtend.frequent_patterns import apriori, association_rules
@@ -146,7 +148,9 @@ def marketbasketanalysisapi(request):
     plt.ylabel('confidence') 
     #plt.show()
     flike = io.BytesIO()
+    
     plt.savefig(flike)
     b64 = base64.b64encode(flike.getvalue()).decode()
-    plt.close()
-    return render(request, template_name='pages/utility/chart1.html', context={'wind_rose': b64})
+    plt.close() 
+    html_table = rules.to_html(justify=CENTER,index=False,classes="table table-bordered dt-responsive",table_id="datatable_wrapper")
+    return render(request, template_name='pages/utility/chart1.html', context={'wind_rose': b64,'tablesdata':html_table})
