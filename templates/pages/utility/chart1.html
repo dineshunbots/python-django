@@ -88,5 +88,13 @@
         <script src="{% static 'js/pages/datatables.init.js' %}"></script>
         <script>
             	$('#datatable_wrapper').DataTable({ 'responsive': true});
+                
+    $(document).ready(function(){
+
+        if((localStorage.getItem("email") == "" && localStorage.getItem("password") == "") || (localStorage.getItem("email") == null && localStorage.getItem("password") == null)){
+            //alert(localStorage.getItem("email"));
+            location.replace("/");
+        }
+    });
         </script>
 {% endblock extra_javascript %}

@@ -25,7 +25,7 @@
                         <!-- end page title -->
 
                         <div class="row">
-                            <div class="col-xl-3 col-sm-6">
+                            <div class="col-xl-3 col-sm-6" id="1">
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="">
@@ -50,7 +50,7 @@
                             </div>
                             <!-- end col -->
 
-                            <div class="col-xl-3 col-sm-6">
+                            <div class="col-xl-3 col-sm-6" id="2">
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="">
@@ -75,7 +75,7 @@
                             </div>
                             <!-- end col -->
 
-                            <div class="col-xl-3 col-sm-6">
+                            <div class="col-xl-3 col-sm-6" id="3">
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="">
@@ -100,7 +100,7 @@
                             </div>
                             <!-- end col -->
 
-                            <div class="col-xl-3 col-sm-6">
+                            <div class="col-xl-3 col-sm-6" id="4">
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="">
@@ -133,3 +133,41 @@
                 </div>
                 <!-- End Page-content -->
 {% endblock content %}
+{% block extra_javascript %}
+<script src="{% static 'libs/jquery/dist/jquery.min.js' %}"></script>
+<script>
+    $(document).ready(function(){
+
+        if((localStorage.getItem("email") == "" && localStorage.getItem("password") == "") || (localStorage.getItem("email") == null && localStorage.getItem("password") == null)){
+            //alert(localStorage.getItem("email"));
+            location.replace("/");
+        }
+        if(localStorage.getItem("email") == "user_1"){
+            $("#1").show();
+            $("#2").show();
+            $("#3").hide();
+            $("#4").hide();
+        }else if(localStorage.getItem("email") == "user_2"){
+            $("#1").hide();
+            $("#2").show();
+            $("#3").hide();
+            $("#4").hide();
+        }else if(localStorage.getItem("email") == "user_3"){
+            $("#1").show();
+            $("#2").hide();
+            $("#3").show();
+            $("#4").hide();
+        }else if(localStorage.getItem("email") == "user_4"){
+            $("#1").hide();
+            $("#2").hide();
+            $("#3").hide();
+            $("#4").show();
+        }else{
+            $("#1").show();
+            $("#2").show();
+            $("#3").show();
+            $("#4").show();
+        }
+    });
+</script>
+{% endblock extra_javascript %}

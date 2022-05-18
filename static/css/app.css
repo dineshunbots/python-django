@@ -2514,7 +2514,7 @@ input[switch="dark"]:checked + label {
     margin-left: 7px; }
 
 .bg-pattern {
-  background-image: url("../images/bg.jpg");
+  background-image: url("../images/bg4.jpeg");
   background-size: cover;
   background-position: center; }
 

@@ -1,7 +1,10 @@
 from django.shortcuts import render,HttpResponse
 from django.views.generic.base import TemplateView
+from django.http.response import JsonResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
-
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.sessions.models import Session
+from http import cookies
 import numpy as np
 import pandas as pd
 from apyori import apriori
@@ -116,7 +119,7 @@ basket
 
 
 frequent_itemsets = apriori(basket_set, min_support=0.08, use_colnames=True)
-print (frequent_itemsets)
+#print (frequent_itemsets)
 rules = association_rules(frequent_itemsets, metric="lift", min_threshold=1)
 rules["antecedents"] = rules["antecedents"].apply(lambda x: ', '.join(list(x))).astype("unicode")
 rules["consequents"] = rules["consequents"].apply(lambda x: ', '.join(list(x))).astype("unicode")
@@ -409,6 +412,20 @@ def chart7(request):
 def dashboard(request):
     return render(request, template_name='pages/utility/dashboard.html', context={})
 
+def dashboardlogin(request): 
+        return render(request, template_name='pages/utility/login.html', context={})
+  
+
+@csrf_exempt        
+def login(request): 
+    email =     request.POST['email']
+    password =     request.POST['password']
+    result = ""
+    responses = {
+                    "Status": result,
+                    
+    }
+    return JsonResponse(responses)
 def marketbasketanalysis(request):
     plt.scatter(support, confidence,   alpha=0.5, marker="o")
     plt.xlabel('support')
