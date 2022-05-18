@@ -3,6 +3,7 @@
 {% block title %}Chart{% endblock title %}
 {% block extra_css %}
         <!-- DataTables -->
+        <link href="{% static 'libs/select2/dist/css/select2.min.css' %}" rel="stylesheet" type="text/css">
         <link href="{% static 'libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css' %}" rel="stylesheet" type="text/css" />
         <link href="{% static 'libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css' %}" rel="stylesheet" type="text/css" />
 
@@ -81,7 +82,28 @@
                                         
                                         <hr/>
                                         <img src='data:image/png;base64,{{ chart5 }}' >
-
+                                        <!-- <hr/>
+                                        <img src='data:image/png;base64,{{ chart6 }}' > -->
+                                        <!-- <hr/>
+                                        
+                                        <img src='data:image/png;base64,{{ chart7 }}' > -->
+                                            <hr/>
+                                           <div class="row">
+                                            <div class="col-10" >
+                                                <label class="form-label">Name</label>
+                                                <select class="form-control select2" id="type">
+                                                    <option value="">Select</option>
+                                                    
+                                                {% for posts in type %}
+                                                <option value="{{ posts }}">{{ posts }}</option>
+                                            {% endfor %} </select>
+                                                </select>
+                                            </div>
+                                            <div class="col-2" style="align-self: self-end;"><button type="button" onclick="getimage()" class="btn btn-primary">Submit</button></div>
+                                           </div>
+                                           <br/>
+                                           <img id="image" style="display:none;" src='' >
+                                           
                                     </div>
                                 </div>
                             </div> <!-- end col -->
@@ -107,6 +129,7 @@
                 <!-- End Page-content -->
 {% endblock content %}
 {% block extra_javascript %}
+        <script src="{% static 'libs/select2/dist/js/select2.min.js' %}"></script>
         <!-- Required datatable js -->
         <script src="{% static 'libs/datatables.net/js/jquery.dataTables.min.js' %}"></script>
         <script src="{% static 'libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
@@ -125,8 +148,43 @@
 
         <!-- Datatable init js -->
         <script src="{% static 'js/pages/datatables.init.js' %}"></script>
+         <!-- init js -->
+         <script src="{% static 'js/pages/form-advanced.init.js' %}"></script>
         <script>
             	$('#datatable_wrapper').DataTable({ 'responsive': true});
             	$('#datatable_wrapper_2').DataTable({ 'responsive': true});
+                
+    $(document).ready(function(){
+
+        if((localStorage.getItem("email") == "" && localStorage.getItem("password") == "") || (localStorage.getItem("email") == null && localStorage.getItem("password") == null)){
+            //alert(localStorage.getItem("email"));
+            location.replace("/");
+        }
+    });
+    function getimage(){
+        var type = $("#type").val();
+        //alert(type);
+        if(type !=""){
+            $.ajax({
+            type: "POST",
+            data:{'type':type},
+            url: "gettype",
+            dataType:"json",
+            success: function(response){
+                console.log(response);
+                if(response.Status == "SUCCESS"){
+                    $("#image").show();
+                    $('#image').prop("src", "data:image/png;base64,"+response.res);
+
+                }else{
+                    alert("Incorrect Type");
+                }
+            }
+        });
+    }else{
+        alert("Please Select Name")
+    }
+    }
+
         </script>
 {% endblock extra_javascript %}

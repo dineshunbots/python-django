@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.views.generic.base import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http.response import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
 from tkinter import CENTER
 import streamlit as st
@@ -178,7 +180,7 @@ html_table = rules.to_html(justify=CENTER,index=False,classes="table table-borde
     
     
     
-fig4=pltnew.figure(figsize=(10,8))
+fig4=pltnew.figure(figsize=(10,5))
 #pltnew.rcParams['figure.figsize'] = (10,6)
 color = pltnew.cm.inferno(np.linspace(0,1,15))
 rules['Antecedents'].value_counts().head(20).plot.bar(color = color)
@@ -189,6 +191,7 @@ flikes = BytesIO()
 pltnew.savefig(flikes,bbox_inches='tight')
 pltnew.tight_layout()
 b641 = base64.b64encode(flikes.getvalue()).decode()
+pltnew.close()
 #pltnew.close()
 #pltnew.show()
 #st.pyplot(fig4)
@@ -212,7 +215,7 @@ coords = rules_to_coordinates(rules.head(40))
 
 # Generate parallel coordinates plot
 
-fig=pltnew.figure(figsize=(10,8))
+fig=pltnew.figure(figsize=(10,5))
 parallel_coordinates(coords, 'rule')
 pltnew.legend([])
 pltnew.grid(True)
@@ -221,6 +224,7 @@ flikes1 = BytesIO()
 pltnew.savefig(flikes1,bbox_inches='tight')
 pltnew.tight_layout()
 b642 = base64.b64encode(flikes1.getvalue()).decode()
+pltnew.close()
 #st.write("**parallel coordinates to visualize rules**")
 st.write(" ")
 st.pyplot(fig)
@@ -228,7 +232,7 @@ st.write(" ")
 st.write(" ")
 st.write("----------------------------------------------------------------- ")
 
-fig2=pltnew.figure(figsize=(10,8))
+fig2=pltnew.figure(figsize=(10,5))
 #pltnew.title('Left Title', loc='left')
 pltnew.title('Optimality of the support-confidence border ', fontsize=15,color="#0094cb",loc='left')
 sns.scatterplot(x = "support", y = "confidence", 
@@ -239,6 +243,7 @@ flikes2 = BytesIO()
 pltnew.savefig(flikes2,bbox_inches='tight')
 pltnew.tight_layout()
 b643 = base64.b64encode(flikes2.getvalue()).decode()
+pltnew.close()
 #st.write("**Optimality of the support-confidence border**")
 st.write(" ")
 st.pyplot(fig2)
@@ -293,7 +298,7 @@ st.write(" ")
 
 st.write("----------------------------------------------------------------------------------------")
 
-fig3=pltnew.figure(figsize=(10,8))
+fig3=pltnew.figure(figsize=(10,5))
 #pltnew.rcParams['figure.figsize'] = (10,6)
 color = pltnew.cm.inferno(np.linspace(0,1,20))
 rules['Antecedents'].value_counts().head(20).plot.bar(color = color)
@@ -304,6 +309,7 @@ flikes3 = BytesIO()
 pltnew.savefig(flikes3,bbox_inches='tight')
 pltnew.tight_layout()
 b644 = base64.b64encode(flikes3.getvalue()).decode()
+pltnew.close()
 #pltnew.show()
 st.pyplot(fig3)
 
@@ -318,7 +324,7 @@ coords = rules_to_coordinates(rules.head(40))
 
 # Generate parallel coordinates plot
 
-fig=pltnew.figure(figsize=(10,8))
+fig=pltnew.figure(figsize=(10,5))
 parallel_coordinates(coords, 'rule')
 pltnew.legend([])
 pltnew.grid(True)
@@ -327,12 +333,75 @@ flikes4 = BytesIO()
 pltnew.savefig(flikes4,bbox_inches='tight')
 pltnew.tight_layout()
 b645 = base64.b64encode(flikes4.getvalue()).decode()
+pltnew.close()
 #st.write("**parallel coordinates to visualize rules**")
 st.write(" ")
 st.pyplot(fig)
 
 
+df=pd.read_csv("Market basket analysis data.csv")
+df
+df.Design= df.Design.str.lower()
+df["Design"]=df["Design"].astype('category')
+df["QUANTITY"]=1
+df2=df[["VOCNO","Design",'QUANTITY']]
+df2
+pd.set_option('display.max_rows', None)
+pd.set_option('display.max_columns', None)
+ 
+basket=df2.groupby(["VOCNO","Design"])["QUANTITY"].sum().unstack().reset_index().fillna(0).set_index("VOCNO")
+basket=pd.DataFrame(basket)
+basket.head(300)
+ 
+basket_set = basket.applymap(encode_unit)
+basket_set
+#print(df['Design'].unique())
+des = df['Design'].unique()
+color = pltnew.cm.rainbow(np.linspace(0, 1, 40))
+df['Design'].value_counts().head(40).plot.bar(color = color, figsize=(13,5))
+pltnew.title('frequency of most popular items', fontsize = 20)
+pltnew.xticks(rotation = 90 )
+pltnew.grid()
+#pltnew.show()
+flikes5 = BytesIO()
+pltnew.savefig(flikes5,bbox_inches='tight')
+pltnew.tight_layout()
+b646 = base64.b64encode(flikes5.getvalue()).decode()
+pltnew.close()
 
+# for x in des:
+#   if x == "banana":
+#     break
+#   print(x)
+
+import networkx as nx
+df['diamond'] = 'diamond ring'
+diamond = df.truncate(before = -1, after = 70)
+diamond = nx.from_pandas_edgelist(diamond, source = 'diamond', target = 'Design', edge_attr = True)
+
+import warnings
+warnings.filterwarnings('ignore')
+
+pltnew.rcParams['figure.figsize'] = (13, 11)
+pos = nx.spring_layout(diamond)
+color = pltnew.cm.Set1(np.linspace(0, 40, 1))
+nx.draw_networkx_nodes(diamond, pos, node_size = 12000, node_color = color)
+nx.draw_networkx_edges(diamond, pos, width = 2, alpha = 0.6, edge_color = 'black')
+nx.draw_networkx_labels(diamond, pos, font_size = 12, font_family = 'sans-serif')
+pltnew.axis('off')
+pltnew.grid()
+pltnew.title('Top 15 First Choices', fontsize = 20)
+#pltnew.show()
+flikes6 = BytesIO()
+pltnew.savefig(flikes6,bbox_inches='tight')
+pltnew.tight_layout()
+b647 = base64.b64encode(flikes6.getvalue()).decode()
+pltnew.close()
+
+frequent_itemsets = apriori(basket_set, min_support=0.08, use_colnames=True)
+#print (frequent_itemsets)
+rules = association_rules(frequent_itemsets, metric="lift", min_threshold=1)
+rules.head()
 
 # Create your views here.
 class EmailInbox(LoginRequiredMixin,TemplateView):
@@ -343,5 +412,55 @@ class EmailCompose(LoginRequiredMixin,TemplateView):
     template_name = "email/email-compose.html"
 
 def testapi(request):
-    return render(request, template_name='pages/utility/chart2.html', context={'wind_rose': b641,'chart2':b642,'chart3':b643,'chart4':b644,'chart5':b645,'tablesdata':html_table,'tablesdata2':html_table_2}) 
+    return render(request, template_name='pages/utility/chart2.html', context={'wind_rose': b641,'chart2':b642,'chart3':b643,'chart4':b644,'chart5':b645,'chart6':b646,'chart7':b647,'tablesdata':html_table,'tablesdata2':html_table_2,'type':des}) 
      
+@csrf_exempt        
+def gettype(request): 
+    type =     request.POST['type']
+    df=pd.read_csv("Market basket analysis data.csv")
+    df
+    df.Design= df.Design.str.lower()
+    df["Design"]=df["Design"].astype('category')
+    df["QUANTITY"]=1
+    df2=df[["VOCNO","Design",'QUANTITY']]
+    df2
+    pd.set_option('display.max_rows', None)
+    pd.set_option('display.max_columns', None)
+    
+    basket=df2.groupby(["VOCNO","Design"])["QUANTITY"].sum().unstack().reset_index().fillna(0).set_index("VOCNO")
+    basket=pd.DataFrame(basket)
+    basket.head(300)
+    
+    basket_set = basket.applymap(encode_unit)
+    basket_set
+   
+    import networkx as nx
+    df['diamond'] = type
+    diamond = df.truncate(before = -1, after = 70)
+    diamond = nx.from_pandas_edgelist(diamond, source = 'diamond', target = 'Design', edge_attr = True)
+
+    import warnings
+    warnings.filterwarnings('ignore')
+
+    pltnew.rcParams['figure.figsize'] = (13, 11)
+    pos = nx.spring_layout(diamond)
+    color = pltnew.cm.Set1(np.linspace(0, 40, 1))
+    nx.draw_networkx_nodes(diamond, pos, node_size = 12000, node_color = color)
+    nx.draw_networkx_edges(diamond, pos, width = 2, alpha = 0.6, edge_color = 'black')
+    nx.draw_networkx_labels(diamond, pos, font_size = 12, font_family = 'sans-serif')
+    pltnew.axis('off')
+    pltnew.grid()
+    pltnew.title('Top 15 First Choices', fontsize = 20)
+    #pltnew.show()
+    flikes6new = BytesIO()
+    pltnew.savefig(flikes6new,bbox_inches='tight')
+    pltnew.tight_layout()
+    b647new = base64.b64encode(flikes6new.getvalue()).decode()
+    pltnew.close()
+    result = "SUCCESS"
+    responses = {
+                    "Status": result,
+                    "res":b647new
+                    
+    }
+    return JsonResponse(responses)
