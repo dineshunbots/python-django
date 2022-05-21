@@ -74,17 +74,19 @@
                                             </div>
                                         </div>
                                        <br/>
-                                       <div class="row"><div class="col-5" ></div><div class="col-2" style="text-align: center;"><button type="button" style="display:none;" id="view_button" onclick="view()" class="btn btn-primary">DETAILED ANALYSIS</button></div><div class="col-5" ></div></div>
+                                       <div class="row"><div class="col-5" ></div><div class="col-2" style="text-align: center;"><a href="{% url 'market-basket-analysis-chart' %}" style="display:none;" id="view_button" class="btn btn-primary">DETAILED ANALYSIS</a><!--<button type="button" style="display:none;" id="view_button" onclick="view()" class="btn btn-primary">DETAILED ANALYSIS</button>--></div><div class="col-5" ></div></div>
                                        <br/>
                                        <div class="row">
                                            <div class="col-6" >
-                                            <img id="apiimage2" style="display:none;" src='' >
+                                            <img id="apiimage2" style="display:none;width:100%;" src='' >
                                            </div>
                                            <div class="col-6" >
-                                               <img id="apiimage3" style="display:none;" src='' >
+                                               <img id="apiimage3" style="display:none;width:100%;" src='' >
                                            </div>
                                        </div>
-                                      
+                                       <div class="row">
+                                        <img id="apiimage4" style="width: 100%;" src='' >
+                                           </div>
 
                                     </div>
                                 </div>
@@ -161,6 +163,9 @@
                     $('#apiimage').prop("src", "data:image/png;base64,"+response.res);
                     $('#apiimage2').prop("src", "data:image/png;base64,"+response.chart1);
                     $('#apiimage3').prop("src", "data:image/png;base64,"+response.chart2);
+                    //$('#apiimage4').prop("src", "data:image/png;base64,"+response.chart3);
+                    localStorage.setItem("chart1", response.chart1);
+                    localStorage.setItem("chart2", response.chart2);
                     $("#table").append(response.table);
                     $('#datatable_wrapper_3').DataTable({ 'responsive': true});
                     $("#view_button").show();

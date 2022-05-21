@@ -13,10 +13,11 @@
                                     <h4 class="mb-sm-0">charts Page</h4>
 
                                     <div class="page-title-right">
-                                        <ol class="breadcrumb m-0">
-                                            <!-- <li class="breadcrumb-item"><a href="javascript: void(0);">Utility</a></li> -->
+                                        <button type="button"  onclick="back()" class="btn btn-primary">Back</button>
+                                        <!-- <ol class="breadcrumb m-0">
+                                           
                                             <li class="breadcrumb-item active">charts Page</li>
-                                        </ol>
+                                        </ol> -->
                                     </div>
 
                                 </div>
@@ -29,11 +30,22 @@
                                 <div class="card">
                                     <div class="card-body">
                                         
-                                        <img src='data:image/png;base64,{{ wind_rose }}'>
+                                        <!-- <img src='data:image/png;base64,{{ wind_rose }}'> -->
+
+                                        <div class="row">
+                                            <div class="col-6" >
+                                             <img id="apiimage2" style="width:100%;" src='' >
+                                            </div>
+                                            <div class="col-6" >
+                                                <img id="apiimage3" style="width:100%;" src='' >
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div> <!-- end col -->
                         </div>
+
+                       
 
 
                         
@@ -42,3 +54,25 @@
                 </div>
                 <!-- End Page-content -->
 {% endblock content %}
+{% block extra_javascript %}
+     
+        <script>
+            
+    $(document).ready(function(){
+
+        if((localStorage.getItem("email") == "" && localStorage.getItem("password") == "") || (localStorage.getItem("email") == null && localStorage.getItem("password") == null)){
+            //alert(localStorage.getItem("email"));
+            location.replace("/");
+        }
+        var chart1 = localStorage.getItem("chart1");
+        var chart2 = localStorage.getItem("chart2");
+        $('#apiimage2').prop("src", "data:image/png;base64,"+chart1);
+        $('#apiimage3').prop("src", "data:image/png;base64,"+chart2);
+    });
+    function back(){
+        localStorage.setItem("chart1", "");
+        localStorage.setItem("chart2", "");
+        location.replace("market-basket-analysis-api");
+    }
+    </script>
+    {% endblock extra_javascript %}

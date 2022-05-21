@@ -174,6 +174,9 @@ def marketbasketanalysisapi(request):
     html_table = rules.to_html(justify=CENTER,index=False,classes="table table-bordered dt-responsive",table_id="datatable_wrapper")
     return render(request, template_name='pages/utility/chart1.html', context={'wind_rose': b64,'tablesdata':html_table})
 
+def marketbasketanalysischart(request):
+    return render(request, template_name='pages/utility/chart3.html', context={'wind_rose': "",})
+
 @csrf_exempt        
 def getapirecord(request): 
     fdate =     request.POST['fdate']
@@ -242,6 +245,8 @@ def getapirecord(request):
     #basket=df2.groupby(["VOCNO","Design"])["GROSS_WT1"].sum().unstack().reset_index().fillna(0).set_index("VOCNO")
     basket=pd.DataFrame(basket) 
     basket=basket.head(200)
+
+    
     #basket.to_csv('file7.csv')
     def encode_unit(x):
         if str(x) == "":
@@ -314,6 +319,30 @@ def getapirecord(request):
     plt.close() 
     #plt.show()
 
+    import networkx as nx
+    df['diamond'] = 'diamond ring'
+    diamond = df.truncate(before = -1, after = 70)
+    diamond = nx.from_pandas_edgelist(diamond, source = 'diamond', target = 'Design', edge_attr = True)
+
+    import warnings
+    warnings.filterwarnings('ignore')
+
+    plt.rcParams['figure.figsize'] = (13, 11)
+    pos = nx.spring_layout(diamond)
+    color = plt.cm.Set1(np.linspace(0, 40, 1))
+    nx.draw_networkx_nodes(diamond, pos, node_size = 12000, node_color = color)
+    nx.draw_networkx_edges(diamond, pos, width = 2, alpha = 0.6, edge_color = 'black')
+    nx.draw_networkx_labels(diamond, pos, font_size = 12, font_family = 'sans-serif')
+    plt.axis('off')
+    plt.grid()
+    plt.title('Top 15 First Choices', fontsize = 20)
+    #pltnew.show()
+    flikes6 = io.BytesIO()
+    plt.savefig(flikes6,bbox_inches='tight')
+    plt.tight_layout()
+    b647 = base64.b64encode(flikes6.getvalue()).decode()
+    plt.close()
+
 
     html_tables = rules.to_html(justify=CENTER,index=False,classes="table table-bordered dt-responsive",table_id="datatable_wrapper_3")    
     result = "SUCCESS"
@@ -322,6 +351,7 @@ def getapirecord(request):
                     "res":b641,
                     "chart1":b642,
                     "chart2":b643,
+                    "chart3":b647,
                     "table":html_tables,
                     
     }

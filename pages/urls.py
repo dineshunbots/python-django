@@ -34,6 +34,7 @@ urlpatterns = [
     path('market-basket-analysis', mailview.testapi, name='market-basket-analysis'), 
     #path('market-basket-analysis', views.marketbasketanalysis, name='market-basket-analysis'),    
     path('market-basket-analysis-api', layview.marketbasketanalysisapi, name='market-basket-analysis-api'),
+    path('market-basket-analysis-chart', layview.marketbasketanalysischart, name='market-basket-analysis-chart'),
     #path('test', mailview.testapi, name='testapi'),    
  
 ]
