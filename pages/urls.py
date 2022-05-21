@@ -29,6 +29,7 @@ urlpatterns = [
     path('', views.dashboardlogin, name='dashboard'),  
     path('login', views.login, name='login'),  
     path('gettype', mailview.gettype, name='gettype'),  
+    path('getapirecord', layview.getapirecord, name='getapirecord'),  
 
     path('market-basket-analysis', mailview.testapi, name='market-basket-analysis'), 
     #path('market-basket-analysis', views.marketbasketanalysis, name='market-basket-analysis'),    
