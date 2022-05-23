@@ -319,10 +319,55 @@ def getapirecord(request):
     plt.close() 
     #plt.show()
 
+    # import networkx as nx
+    # df['diamond'] = 'diamond ring'
+    # diamond = df.truncate(before = -1, after = 70)
+    # diamond = nx.from_pandas_edgelist(diamond, source = 'diamond', target = 'Design', edge_attr = True)
+
+    # import warnings
+    # warnings.filterwarnings('ignore')
+
+    # plt.rcParams['figure.figsize'] = (13, 11)
+    # pos = nx.spring_layout(diamond)
+    # color = plt.cm.Set1(np.linspace(0, 40, 1))
+    # nx.draw_networkx_nodes(diamond, pos, node_size = 12000, node_color = color)
+    # nx.draw_networkx_edges(diamond, pos, width = 2, alpha = 0.6, edge_color = 'black')
+    # nx.draw_networkx_labels(diamond, pos, font_size = 12, font_family = 'sans-serif')
+    # plt.axis('off')
+    # plt.grid()
+    # plt.title('Top 15 First Choices', fontsize = 20)
+    # #pltnew.show()
+    # flikes6 = io.BytesIO()
+    # plt.savefig(flikes6,bbox_inches='tight')
+    # plt.tight_layout()
+    # b647 = base64.b64encode(flikes6.getvalue()).decode()
+    # plt.close()
+
+
+    ress = requests.get("http://brilliantbidata.sunwebapps.com/api/MarketBasket?strFromDate="+fdate+"&strTodate="+tdate)
+    jes = ress.json()
+    dfs = pd.DataFrame(jes)
+    dfs
+    dfs.DESIGN_DESCRIPTION= dfs.DESIGN_DESCRIPTION.str.lower()
+    dfs["DESIGN_DESCRIPTION"]=dfs["DESIGN_DESCRIPTION"].astype('category')
+    dfs["QUANTITY"]=1
+    df21=dfs[["VOCNO","DESIGN_DESCRIPTION",'QUANTITY']]
+    df21
+    #print(df21)
+    pd.set_option('display.max_rows', None)
+    pd.set_option('display.max_columns', None)
+    
+    basket1=df21.groupby(["VOCNO","DESIGN_DESCRIPTION"])["QUANTITY"].sum().unstack().reset_index().fillna(0).set_index("VOCNO")
+    basket1=pd.DataFrame(basket1)
+    basket1.head(300)
+    
+    basket_set1 = basket1.applymap(encode_unit)
+    basket_set1
+   
     import networkx as nx
-    df['diamond'] = 'diamond ring'
-    diamond = df.truncate(before = -1, after = 70)
-    diamond = nx.from_pandas_edgelist(diamond, source = 'diamond', target = 'Design', edge_attr = True)
+    dfs['diamond'] = "diamond ring"
+    diamond = dfs.truncate(before = -1, after = 70) 
+    diamond = nx.from_pandas_edgelist(diamond, source = 'diamond', target = 'DESIGN_DESCRIPTION', edge_attr = True)
 
     import warnings
     warnings.filterwarnings('ignore')
@@ -337,11 +382,12 @@ def getapirecord(request):
     plt.grid()
     plt.title('Top 15 First Choices', fontsize = 20)
     #pltnew.show()
-    flikes6 = io.BytesIO()
-    plt.savefig(flikes6,bbox_inches='tight')
+    flikes6new = io.BytesIO()
+    plt.savefig(flikes6new,bbox_inches='tight')
     plt.tight_layout()
-    b647 = base64.b64encode(flikes6.getvalue()).decode()
+    b647 = base64.b64encode(flikes6new.getvalue()).decode()
     plt.close()
+
 
 
     html_tables = rules.to_html(justify=CENTER,index=False,classes="table table-bordered dt-responsive",table_id="datatable_wrapper_3")    

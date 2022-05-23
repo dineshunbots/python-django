@@ -2,7 +2,7 @@
 
 {% block sidebar %}
             <!-- ========== Left Sidebar Start ========== -->
-            <div class="vertical-menu">
+            <div class="vertical-menu" style="width: 60px;">
 
                 <div data-simplebar class="h-100">
 
@@ -10,24 +10,24 @@
                     <div id="sidebar-menu">
                         <!-- Left Menu Start -->
                         <ul class="metismenu list-unstyled" id="side-menu">
-                            <li class="menu-title">Menu</li>
-                            <li>
-                                <a href="{% url 'dashboard' %}" class=" waves-effect">
-                                    <i class="mdi mdi-calendar-outline"></i>
-                                    <span>Dashboard</span>
+                            <li class="menu-title" style="padding: 4px 13px !important;">Menu</li>
+                            <li style="height: 40px;">
+                                <a href="{% url 'dashboard' %}" class=" waves-effect" style="padding: 3px 13px;">
+                                    <i class="mdi mdi-home" style="font-size: xx-large;"></i>
+                                    <!-- <span>Dashboard</span> -->
                                     
                                 </a>
                             </li>
-                            <li>
-                                <a href="{% url 'market-basket-analysis' %}" class=" waves-effect">
-                                    <i class="mdi mdi-calendar-outline"></i>
-                                    <span>Market Basket Analysis</span>
+                            <li style="height: 40px;">
+                                <a href="{% url 'market-basket-analysis' %}" class=" waves-effect" style="padding: 3px 13px;">
+                                    <i class="mdi mdi-cart" style="font-size: xx-large;"></i>
+                                    <!-- <span>Market Basket Analysis</span> -->
                                 </a>
                             </li>
-                            <li>
-                                <a href="{% url 'market-basket-analysis-api' %}" class=" waves-effect">
-                                    <i class="mdi mdi-calendar-outline"></i>
-                                    <span>Market Basket Analysis API</span>
+                            <li style="height: 40px;">
+                                <a href="{% url 'market-basket-analysis-api' %}" class=" waves-effect" style="padding: 3px 13px;">
+                                    <i class="mdi mdi-cart" style="font-size: xx-large;"></i>
+                                    <!-- <span>Market Basket Analysis API</span> -->
                                 </a>
                             </li>
 
