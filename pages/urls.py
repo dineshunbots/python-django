@@ -25,11 +25,14 @@ urlpatterns = [
     path('chart5', views.chart5, name='chart5'), 
     path('chart6', views.chart6, name='chart6'), 
     path('chart7', views.chart7, name='chart7'),  
-    path('dashboard', views.dashboard, name='dashboard'),  
+    path('dashboard', views.dashboard, name='dashboard'), 
+    path('view-recommendation', views.viewrecommendation, name='view-recommendation'),  
+     
     path('', views.dashboardlogin, name='dashboardlogin'),  
     path('login', views.login, name='login'),  
     path('gettype', mailview.gettype, name='gettype'),  
     path('getapirecord', layview.getapirecord, name='getapirecord'),  
+    path('gettypefromapi', layview.gettypefromapi, name='gettypefromapi'),   
 
     path('market-basket-analysis', mailview.testapi, name='market-basket-analysis'), 
     #path('market-basket-analysis', views.marketbasketanalysis, name='market-basket-analysis'),    

@@ -177,6 +177,65 @@ def marketbasketanalysisapi(request):
 def marketbasketanalysischart(request):
     return render(request, template_name='pages/utility/chart3.html', context={'wind_rose': "",})
 
+@csrf_exempt 
+def gettypefromapi(request):
+    fdate =     request.POST['fdate']
+    tdate =     request.POST['tdate']
+    type =     request.POST['type']
+    ress = requests.get("http://brilliantbidata.sunwebapps.com/api/MarketBasket?strFromDate="+fdate+"&strTodate="+tdate)
+    jes = ress.json()
+    dfs = pd.DataFrame(jes)
+    dfs
+    dfs.DESIGN_DESCRIPTION= dfs.DESIGN_DESCRIPTION.str.lower()
+    dfs["DESIGN_DESCRIPTION"]=dfs["DESIGN_DESCRIPTION"].astype('category')
+    dfs["QUANTITY"]=1
+    df21=dfs[["VOCNO","DESIGN_DESCRIPTION",'QUANTITY']]
+    df21
+    des = dfs['DESIGN_DESCRIPTION'].unique()
+    #print(des)
+    pd.set_option('display.max_rows', None)
+    pd.set_option('display.max_columns', None)
+    
+    basket1=df21.groupby(["VOCNO","DESIGN_DESCRIPTION"])["QUANTITY"].sum().unstack().reset_index().fillna(0).set_index("VOCNO")
+    basket1=pd.DataFrame(basket1)
+    basket1.head(300)
+    
+    basket_set1 = basket1.applymap(encode_unit)
+    basket_set1
+   
+    import networkx as nx
+    dfs['diamond'] = type
+    diamond = dfs.truncate(before = -1, after = 70) 
+    diamond = nx.from_pandas_edgelist(diamond, source = 'diamond', target = 'DESIGN_DESCRIPTION', edge_attr = True)
+
+    import warnings
+    warnings.filterwarnings('ignore')
+
+    plt.rcParams['figure.figsize'] = (13, 11)
+    pos = nx.spring_layout(diamond)
+    #color = plt.cm.Set1(np.linspace(0, 40, 1))
+    color_map = ["blue"]
+    nx.draw_networkx_nodes(diamond, pos, node_size = 12000, node_color = "#3d6993")
+    nx.draw_networkx_edges(diamond, pos, width = 2, alpha = 0.6, edge_color = 'black')
+    nx.draw_networkx_labels(diamond, pos, font_size = 12, font_family = 'sans-serif')
+    plt.axis('off')
+    plt.grid()
+    plt.title('Top 15 First Choices', fontsize = 20)
+    #pltnew.show()
+    flikes6new = io.BytesIO()
+    plt.savefig(flikes6new,bbox_inches='tight')
+    plt.tight_layout()
+    b647 = base64.b64encode(flikes6new.getvalue()).decode()
+    plt.close()
+    
+    result = "SUCCESS"
+    responses = {
+                    "Status": result,
+                    "res":b647,
+                    
+    }
+    return JsonResponse(responses)
+
 @csrf_exempt        
 def getapirecord(request): 
     fdate =     request.POST['fdate']
@@ -353,7 +412,8 @@ def getapirecord(request):
     dfs["QUANTITY"]=1
     df21=dfs[["VOCNO","DESIGN_DESCRIPTION",'QUANTITY']]
     df21
-    #print(df21)
+    des = dfs['DESIGN_DESCRIPTION'].unique()
+    #print(des)
     pd.set_option('display.max_rows', None)
     pd.set_option('display.max_columns', None)
     
@@ -374,8 +434,9 @@ def getapirecord(request):
 
     plt.rcParams['figure.figsize'] = (13, 11)
     pos = nx.spring_layout(diamond)
-    color = plt.cm.Set1(np.linspace(0, 40, 1))
-    nx.draw_networkx_nodes(diamond, pos, node_size = 12000, node_color = color)
+    #color = plt.cm.Set1(np.linspace(0, 40, 1))
+    color_map = ["blue"]
+    nx.draw_networkx_nodes(diamond, pos, node_size = 12000, node_color = "#3d6993")
     nx.draw_networkx_edges(diamond, pos, width = 2, alpha = 0.6, edge_color = 'black')
     nx.draw_networkx_labels(diamond, pos, font_size = 12, font_family = 'sans-serif')
     plt.axis('off')
@@ -388,7 +449,7 @@ def getapirecord(request):
     b647 = base64.b64encode(flikes6new.getvalue()).decode()
     plt.close()
 
-
+    listToStr = ','.join([str(elem) for elem in des])
 
     html_tables = rules.to_html(justify=CENTER,index=False,classes="table table-bordered dt-responsive",table_id="datatable_wrapper_3")    
     result = "SUCCESS"
@@ -399,6 +460,7 @@ def getapirecord(request):
                     "chart2":b643,
                     "chart3":b647,
                     "table":html_tables,
+                    "list": listToStr,
                     
     }
     return JsonResponse(responses)

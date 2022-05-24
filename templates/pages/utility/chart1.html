@@ -26,7 +26,7 @@
                                     <div class="page-title-right">
                                         <ol class="breadcrumb m-0">
                                             <!-- <li class="breadcrumb-item"><a href="javascript: void(0);">Utility</a></li> -->
-                                            <li class="breadcrumb-item active">Market Basket Analysis</li>
+                                            <!-- <li class="breadcrumb-item active">Market Basket Analysis</li> -->
                                         </ol>
                                     </div>
 
@@ -64,7 +64,7 @@
                                                 <label class="form-label">End Date</label>
                                                <input type="date" id="tdate" class="form-control">
                                             </div>  
-                                            <div class="col-2" style="align-self: self-end;"><button type="button" onclick="getapirecord()" class="btn btn-primary">SUBMIT</button>
+                                            <div class="col-2" style="align-self: self-end;"><button type="button" onclick="getapirecord()" class="btn btn-primary">SUBMIT</button> <button type="button" onclick="reset()" class="btn btn-primary">RESET</button>
                                                 </div> 
                                         </div>  
                                         <br/>
@@ -146,11 +146,32 @@
         <script>
             	$('#datatable_wrapper').DataTable({ 'responsive': true});
                 
+                function reset(){
+                    localStorage.setItem("chart0", "");
+                    localStorage.setItem("chart1", "");
+                    localStorage.setItem("chart2", "");
+                    localStorage.setItem("table", "");
+                    localStorage.setItem("fdate", "");
+                    localStorage.setItem("tdate", "");
+                    localStorage.setItem("list", "");
+                    location.reload();
+                }
     $(document).ready(function(){
 
         if((localStorage.getItem("email") == "" && localStorage.getItem("password") == "") || (localStorage.getItem("email") == null && localStorage.getItem("password") == null)){
             //alert(localStorage.getItem("email"));
             location.replace("/");
+        }
+        if(localStorage.getItem("chart0") != "" && localStorage.getItem("chart0") != null){
+
+            //alert(localStorage.getItem("chart0"));
+                    $("#apiimage").show();
+                    $('#apiimage').prop("src", "data:image/png;base64,"+localStorage.getItem("chart0"));
+                    $("#table").append(localStorage.getItem("table"));
+                    $("#fdate").val(localStorage.getItem("fdate"));
+                    $("#tdate").val(localStorage.getItem("tdate"));
+                    $('#datatable_wrapper_3').DataTable({ 'responsive': true});
+                    $("#view_button").show();
         }
     });
     function getapirecord(){
@@ -201,6 +222,11 @@
                     //$('#apiimage4').prop("src", "data:image/png;base64,"+response.chart3);
                     localStorage.setItem("chart1", response.chart3);
                     localStorage.setItem("chart2", response.chart2);
+                    localStorage.setItem("chart0", response.res);
+                    localStorage.setItem("table", response.table);
+                    localStorage.setItem("fdate", fdate);
+                    localStorage.setItem("tdate", tdate);
+                    localStorage.setItem("list",  response.list);
                     $("#table").append(response.table);
                     $('#datatable_wrapper_3').DataTable({ 'responsive': true});
                     $("#view_button").show();

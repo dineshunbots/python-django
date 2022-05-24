@@ -2,6 +2,8 @@
 {% load static %}
 {% block title %}Starter Page{% endblock title %}
 {% block content %}
+<link href="{% static 'libs/select2/dist/css/select2.min.css' %}" rel="stylesheet" type="text/css">
+
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
                 <div class="page-content">
                     <div class="container-fluid">
@@ -10,10 +12,11 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                                    <h4 class="mb-sm-0">charts Page</h4>
+                                    <h4 class="mb-sm-0">Detailed Analysis</h4>
 
                                     <div class="page-title-right">
-                                        <button type="button"  onclick="back()" class="btn btn-primary">Back</button>
+                                        <!-- <button type="button"  onclick="back()" class="btn btn-primary">Back</button> -->
+                                        <a href="#" class="btn btn-primary" onclick="history.back();return false;">Back</a>
                                         <!-- <ol class="breadcrumb m-0">
                                            
                                             <li class="breadcrumb-item active">charts Page</li>
@@ -29,6 +32,19 @@
                             <div class="col-12">
                                 <div class="card">
                                     <div class="card-body">
+
+                                        <div class="row">
+                                            <div class="col-4" >
+                                                <label class="form-label">Design</label>
+                                                <select class="form-control select2" id="types">
+                                                    <option value="">Select</option>
+                                                    
+                                              
+                                                </select>
+                                            </div>
+                                            <div class="col-2" style="align-self: self-end;"><button type="button" onclick="getimages()" class="btn btn-primary">Submit</button></div>
+                                           </div>
+                                           <br/>
                                         
                                         <!-- <img src='data:image/png;base64,{{ wind_rose }}'> -->
 
@@ -40,6 +56,10 @@
                                                 <img id="apiimage3" style="width:100%;" src='' >
                                             </div>
                                         </div>
+
+                                        <br/>
+                                       <div class="row"><div class="col-5" ></div><div class="col-2" style="text-align: center;"><a href="{% url 'view-recommendation' %}" style="width: max-content;" class="btn btn-lg btn-primary">VIEW RECOMMENDATION</a><!--<button type="button" style="display:none;" id="view_button" onclick="view()" class="btn btn-primary">DETAILED ANALYSIS</button>--></div><div class="col-5" ></div></div>
+                                      
                                     </div>
                                 </div>
                             </div> <!-- end col -->
@@ -55,7 +75,7 @@
                 <!-- End Page-content -->
 {% endblock content %}
 {% block extra_javascript %}
-     
+<script src="{% static 'libs/select2/dist/js/select2.min.js' %}"></script>
         <script>
             
     $(document).ready(function(){
@@ -66,13 +86,50 @@
         }
         var chart1 = localStorage.getItem("chart1");
         var chart2 = localStorage.getItem("chart2");
+        var list = localStorage.getItem("list");
+        const myArray = list.split(",");
+        $("#types").empty();
+        $("#types").append('<option value="">Select</option>');
+        for(i=0;i<=myArray.length;i++){
+            $("#types").append('<option value="'+myArray[i]+'">'+myArray[i]+'</option>');
+
+        }
+        $("#types").select2();
+
         $('#apiimage2').prop("src", "data:image/png;base64,"+chart1);
         $('#apiimage3').prop("src", "data:image/png;base64,"+chart2);
     });
     function back(){
-        localStorage.setItem("chart1", "");
-        localStorage.setItem("chart2", "");
-        location.replace("market-basket-analysis-api");
+        //localStorage.setItem("chart1", "");
+        //localStorage.setItem("chart2", "");
+        //location.replace("market-basket-analysis-api");
+        location.back();
+    }
+    function getimages(){
+        var type = $("#types").val();
+        var fdate = localStorage.getItem("fdate");
+        var tdate = localStorage.getItem("tdate");
+        //alert(type);
+        if(type !=""){
+            $.ajax({
+            type: "POST",
+            data:{'type':type,'fdate':fdate,'tdate':tdate},
+            url: "gettypefromapi",
+            dataType:"json",
+            success: function(response){
+                console.log(response);
+                if(response.Status == "SUCCESS"){
+                    $("#apiimage2").show();
+                    $('#apiimage2').prop("src", "data:image/png;base64,"+response.res);
+
+                }else{
+                    alert("Incorrect Type");
+                }
+            }
+        });
+    }else{
+        alert("Please Select Name")
+    }
     }
     </script>
     {% endblock extra_javascript %}

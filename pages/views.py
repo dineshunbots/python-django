@@ -412,6 +412,9 @@ def chart7(request):
 def dashboard(request):
     return render(request, template_name='pages/utility/dashboard.html', context={})
 
+def viewrecommendation(request):
+    return render(request, template_name='pages/utility/viewrecommendation.html', context={})
+
 def dashboardlogin(request): 
         return render(request, template_name='pages/utility/login.html', context={})
   
