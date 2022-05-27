@@ -113,6 +113,7 @@ df["Design"]= df.Design.str.lower()
 df["Design"]=df["Design"].astype('category')
 df=df.replace({'Category_Code':new})
 df['Design'] = np.where(df['Design']== "diamond",df["Category_Code"] , df['Design'])
+dess = df['Design'].unique()
 df["QUANTITY"]=1
 df2=df[["VOCNO","Design",'QUANTITY',"PRICE_RANGE"]]
 #df2 = df2.astype({"PRICE_RANGE": object})
@@ -356,7 +357,7 @@ basket.head(300)
 basket_set = basket.applymap(encode_unit)
 basket_set
 #print(df['Design'].unique())
-des = df['Design'].unique()
+#des = df['Design'].unique()
 color = pltnew.cm.rainbow(np.linspace(0, 1, 40))
 df['Design'].value_counts().head(40).plot.bar(color = color, figsize=(13,5))
 pltnew.title('frequency of most popular items', fontsize = 20)
@@ -412,7 +413,7 @@ class EmailCompose(LoginRequiredMixin,TemplateView):
     template_name = "email/email-compose.html"
 
 def testapi(request):
-    return render(request, template_name='pages/utility/chart2.html', context={'wind_rose': b641,'chart2':b642,'chart3':b643,'chart4':b644,'chart5':b645,'chart6':b646,'chart7':b647,'tablesdata':html_table,'tablesdata2':html_table_2,'type':des}) 
+    return render(request, template_name='pages/utility/chart2.html', context={'wind_rose': b641,'chart2':b642,'chart3':b643,'chart4':b644,'chart5':b645,'chart6':b646,'chart7':b647,'tablesdata':html_table,'tablesdata2':html_table_2,'type':dess}) 
      
 @csrf_exempt        
 def gettype(request): 

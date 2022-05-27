@@ -117,6 +117,7 @@ rules = association_rules(frequent_itemsets, metric="lift", min_threshold=1)
 rules["antecedents"] = rules["antecedents"].apply(lambda x: ', '.join(list(x))).astype("unicode")
 rules["consequents"] = rules["consequents"].apply(lambda x: ', '.join(list(x))).astype("unicode")
 rules
+#print(rules)
 support=rules['support'].values
 confidence=rules['confidence'].values
 import random
@@ -130,6 +131,7 @@ def rules_to_coordinates(rules):
     rules['consequent'] = rules['consequents'].apply(lambda consequent: list(consequent)[0])
     rules['rule'] = rules.index
     return rules[['antecedent','consequent','rule']]
+
 
 
 
@@ -322,7 +324,7 @@ def getapirecord(request):
     rules = association_rules(frequent_itemsets, metric="lift", min_threshold=1)
     rules["antecedents"] = rules["antecedents"].apply(lambda x: ', '.join(list(x))).astype("unicode")
     rules["consequents"] = rules["consequents"].apply(lambda x: ', '.join(list(x))).astype("unicode")
-    rules
+    rules 
     support=rules['support'].values
     confidence=rules['confidence'].values
     import random
@@ -402,6 +404,37 @@ def getapirecord(request):
     # b647 = base64.b64encode(flikes6.getvalue()).decode()
     # plt.close()
 
+    new={'PN':"diamond pendant",
+    'RN':"diamond ring",
+    'BT':"diamond bracelet",
+    'ER':"diamond earring",
+    'BN':"diamond bangle",
+    'NK':"diamond necklace",
+    'BR':"gold bracelet",
+    'GB':"gold bracelet",
+    'GN':"diamond necklae",
+    'REP':"jewellery repairing",
+    'CUF':"diamond cufflink",
+    'GBT':"gold bracelet with color stone",
+    'DIA':"gold chain",
+    'AN':"diamond anklet", 
+    'GE':"gold earring",
+    'SUT':"diamond suiti",
+    'GPN':"gold pendant with colour stone",
+    'GER':"gold earring",
+    'RP':"platinum ring",
+    'GNK':"gold necklace",
+    'NP':"nose pin", 
+    'GBNC':'gold bangle with colour stone',
+    'GHN':"gold hand chain",
+    'BRCH':"gold brooch",
+    'GP':"gold pendant",
+    'JEW':"gold chain",
+    'GRN':"gold ring with color stone",
+    'CRN':"diamond crown",
+    'HC':"hand chain",
+    'DJEW':"cufflink", 
+    'BB':"diamond belly button"}
 
     ress = requests.get("http://brilliantbidata.sunwebapps.com/api/MarketBasket?strFromDate="+fdate+"&strTodate="+tdate)
     jes = ress.json()
@@ -409,6 +442,8 @@ def getapirecord(request):
     dfs
     dfs.DESIGN_DESCRIPTION= dfs.DESIGN_DESCRIPTION.str.lower()
     dfs["DESIGN_DESCRIPTION"]=dfs["DESIGN_DESCRIPTION"].astype('category')
+    dfs=dfs.replace({'CATEGORY_CODE':new})
+    dfs['DESIGN_DESCRIPTION'] = np.where(dfs['DESIGN_DESCRIPTION']== "diamond",dfs["CATEGORY_CODE"] , dfs['DESIGN_DESCRIPTION'])
     dfs["QUANTITY"]=1
     df21=dfs[["VOCNO","DESIGN_DESCRIPTION",'QUANTITY']]
     df21
@@ -450,7 +485,7 @@ def getapirecord(request):
     plt.close()
 
     listToStr = ','.join([str(elem) for elem in des])
-
+    
     html_tables = rules.to_html(justify=CENTER,index=False,classes="table table-bordered dt-responsive",table_id="datatable_wrapper_3")    
     result = "SUCCESS"
     responses = {
