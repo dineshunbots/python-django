@@ -2,6 +2,7 @@ from django.urls import path
 from pages import views
 from layout import views as layview
 from e_mail import views as mailview
+from components import views as comview
 urlpatterns = [
     # Authentication
     path('auth-lock-screen', views.AuthLockScrren.as_view(),name='auth-lock-screen'),
@@ -33,8 +34,11 @@ urlpatterns = [
     path('gettype', mailview.gettype, name='gettype'),  
     path('getapirecord', layview.getapirecord, name='getapirecord'),  
     path('gettypefromapi', layview.gettypefromapi, name='gettypefromapi'),   
+    path('savefile', comview.savefile, name='savefile'),   
+    
 
-    path('market-basket-analysis', mailview.testapi, name='market-basket-analysis'), 
+    path('market-basket-analysis', comview.marketbasket, name='market-basket-analysis'), 
+    #path('market-basket-analysis', mailview.testapi, name='market-basket-analysis'), 
     #path('market-basket-analysis', views.marketbasketanalysis, name='market-basket-analysis'),    
     path('market-basket-analysis-api', layview.marketbasketanalysisapi, name='market-basket-analysis-api'),
     path('market-basket-analysis-chart', layview.marketbasketanalysischart, name='market-basket-analysis-chart'),

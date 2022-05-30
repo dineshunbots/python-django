@@ -1,0 +1,268 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block title %}Chart{% endblock title %}
+{% block extra_css %}
+        <!-- DataTables -->
+        <link href="{% static 'libs/select2/dist/css/select2.min.css' %}" rel="stylesheet" type="text/css">
+        <link href="{% static 'libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css' %}" rel="stylesheet" type="text/css" />
+        <link href="{% static 'libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css' %}" rel="stylesheet" type="text/css" />
+
+        <!-- Responsive datatable examples -->
+        <link href="{% static 'libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css' %}" rel="stylesheet" type="text/css" />     
+{% endblock extra_css %}
+{% block content %}
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+                <div class="page-content">
+                    <div class="container-fluid">
+
+                        <!-- start page title -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                                    <h4 class="mb-sm-0" style="color:#336699 !important;">Market Basket Analysis</h4>
+
+                                    <div class="page-title-right">
+                                        <ol class="breadcrumb m-0">
+                                            <!-- <li class="breadcrumb-item"><a href="javascript: void(0);">Utility</a></li> -->
+                                            <!-- <li class="breadcrumb-item active">Market Basket Analysis</li> -->
+                                        </ol>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end page title -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body" >
+
+                                        <h3 class="mb-sm-0" style="color: #379ccb;">Market Basket Analysis</h3>
+                                        <br>
+                                                                           <p>Market basket analysis is a data mining technique used by retailers to increase sales by better understanding customer purchasing patterns.
+                                            <br>It involves analyzing large data sets, such as purchase history, to reveal product groupings, as well as products that are likely to be purchased together.</p>
+                                            <br>
+                                            <form  class="" uk-grid  action="" method="post" id="form" data-application="update" enctype='multipart/form-data'>
+                                            <div class="row">
+                                                <div class="col-6" >
+                                                    <label class="form-label">File</label>
+                                                   <input class="form-control" type="file" name="file" id="file"/>
+                                                </div>
+                                                <div class="col-2" style="align-self: self-end;"><button type="submit" class="btn btn-primary">Submit</button></div>
+                                            </div>
+                                            </form>
+                                            <div id="cardshow" style="display:none;">   
+                                            <hr/>
+                                            <br>
+                                               
+                                            <h3 class="mb-sm-0" style="color: #379ccb;">Market Basket Analysis with Design</h3>
+                                            <br>
+                                        <!-- {{ tablesdata | safe }} -->
+                                        <div id="table1"></div>
+                                        
+                                        <hr/>
+
+                                        <!-- <h3>Graph </h3> -->
+                                        <img src='' id="image1">
+                                        <hr/>
+
+                                        <img src='' id="image2">
+                                       
+                                        <hr/>
+
+                                        <img src='' id="image3" >
+                                        
+                                        <br>
+                                        <p>An association rule has two parts: an <b>Antecedent</b> (if) and a <b>Consequent</b> (then). An antecedent is an item found within the data. A consequent is an item found in combination with the antecedent. ... Association rules are calculated from itemsets, which are made up of two or more items.
+                                            <br>
+
+                                            <b>Support :</b> Support is an indication of how frequently the items appear in the data. It refers to how often a given rule appears in the database being mined.
+                                            <br>
+
+                                            <b>Confidence :</b> Confidence indicates the number of times the if-then statements are found true.Confidence refers to the amount of times a given rule turns out to be true in practice. A rule may show a strong correlation in a data set because it appears very often but may occur far less when applied. This would be a case of high support, but low confidence.Conversely, a rule might not particularly stand out in a data set, but continued analysis shows that it occurs very frequently. This would be a case of high confidence and low support. Using these measures helps analysts separate causation from correlation, and allows them to properly value a given rule.
+                                            
+                                            <br>
+                                            <b>Lift :</b> lift can be used to compare confidence with expected confidence, or how many times an if-then statement is expected to be found true. It is the ratio of confidence to support. If the lift value is a negative value, then there is a negative correlation between datapoints. If the value is positive, there is a positive correlation, and if the ratio equals 1, then there is no correlation.</p>
+                                        <hr/>
+                                            <div id="table2"></div>
+                                        <!-- {{ tablesdata2 | safe }} -->
+                                        
+                                        
+                                        <hr/>
+                                        <img src='' id="image4" >
+                                        
+                                        <hr/>
+                                        <img src='' id="image5" >
+                                        <!-- <hr/>
+                                        <img src='data:image/png;base64,{{ chart6 }}' > -->
+                                        <!-- <hr/>
+                                        
+                                        <img src='data:image/png;base64,{{ chart7 }}' > -->
+                                            <hr/>
+                                           <div class="row">
+                                            <div class="col-6" >
+                                                <label class="form-label">Design</label>
+                                                <select class="form-control select2" id="type">
+                                                    <option value="">Select</option>
+                                                    
+                                               
+                                                </select>
+                                            </div>
+                                            <div class="col-2" style="align-self: self-end;"><button type="button" onclick="getimage()" class="btn btn-primary">Submit</button></div>
+                                           </div>
+                                           <br/>
+                                           <img id="image" style="display:none;" src='' >
+
+                                        </div>
+ 
+                                    </div>
+                                </div>
+                            </div> <!-- end col -->
+                        </div>
+                      
+                        <!-- <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        
+                                      
+                                       
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                       -->
+
+                        
+
+                    </div> <!-- container-fluid -->
+                </div>
+                <!-- End Page-content -->
+{% endblock content %}
+{% block extra_javascript %}
+        <script src="{% static 'libs/select2/dist/js/select2.min.js' %}"></script>
+        <!-- Required datatable js -->
+        <script src="{% static 'libs/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+        <script src="{% static 'libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+        <!-- Buttons examples -->
+        <script src="{% static 'libs/datatables.net-buttons/js/dataTables.buttons.min.js' %}"></script>
+        <script src="{% static 'libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js' %}"></script>
+        <script src="{% static 'libs/jszip/dist/jszip.min.js' %}"></script>
+        <script src="{% static 'libs/pdfmake/build/pdfmake.min.js' %}"></script>
+        <script src="{% static 'libs/pdfmake/build/vfs_fonts.js' %}"></script>
+        <script src="{% static 'libs/datatables.net-buttons/js/buttons.html5.min.js' %}"></script>
+        <script src="{% static 'libs/datatables.net-buttons/js/buttons.print.min.js' %}"></script>
+        <script src="{% static 'libs/datatables.net-buttons/js/buttons.colVis.min.js' %}"></script>
+        <!-- Responsive examples -->
+        <script src="{% static 'libs/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
+        <script src="{% static 'libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js' %}"></script>
+
+        <!-- Datatable init js -->
+        <script src="{% static 'js/pages/datatables.init.js' %}"></script>
+         <!-- init js -->
+         <script src="{% static 'js/pages/form-advanced.init.js' %}"></script>
+        <script>
+            	$('#datatable_wrapper').DataTable({ 'responsive': true});
+            	$('#datatable_wrapper_2').DataTable({ 'responsive': true});
+                
+    $(document).ready(function(){
+
+        if((localStorage.getItem("email") == "" && localStorage.getItem("password") == "") || (localStorage.getItem("email") == null && localStorage.getItem("password") == null)){
+            //alert(localStorage.getItem("email"));
+            location.replace("/");
+        }
+    });
+    function getimage(){
+        var type = $("#type").val();
+        //alert(type);
+        if(type !=""){
+            $.ajax({
+            type: "POST",
+            data:{'type':type},
+            url: "gettype",
+            dataType:"json",
+            success: function(response){
+                console.log(response);
+                if(response.Status == "SUCCESS"){
+                    $("#image").show();
+                    $('#image').prop("src", "data:image/png;base64,"+response.res);
+
+                }else{
+                    alert("Incorrect Type");
+                }
+            }
+        });
+    }else{
+        alert("Please Select Name");
+    }
+    }
+
+
+
+
+    window.onload = function(){
+       
+var formEl = document.getElementById('form');
+formEl.addEventListener('submit', function(event) {
+  var headers = new Headers();
+  headers.set('Accept', 'application/json');
+  var formData = new FormData();
+  for (var i = 0; i < formEl.length; ++i) {
+    if(formEl[i].name == "file"){
+        const fileField = document.querySelector('input[name="file"]');
+        formData.append('file', fileField.files[0]);
+    }else{
+        formData.append(formEl[i].name, formEl[i].value);
+      }    
+  }
+ 
+  var url = 'savefile';
+  var fetchOptions = {
+    method: 'POST',
+    headers,
+    body: formData
+  };
+  
+  var responsePromise = fetch(url, fetchOptions);
+  responsePromise
+  	
+      .then(response => response.json())
+        .then(data => {
+             console.log(data);
+            if(data.Status == 'SUCCESS') {
+                
+                $('#image1').prop("src", "data:image/png;base64,"+data.wind_rose);
+                $('#image2').prop("src", "data:image/png;base64,"+data.chart2);
+                $('#image3').prop("src", "data:image/png;base64,"+data.chart3);
+                $('#image4').prop("src", "data:image/png;base64,"+data.chart4);
+                $('#image5').prop("src", "data:image/png;base64,"+data.chart5);
+               
+                var list = data.type;
+                const myArray = list.split(",");
+                $("#type").empty();
+                $("#type").append('<option value="">Select</option>');
+                for(i=0;i<=myArray.length;i++){
+                    $("#type").append('<option value="'+myArray[i]+'">'+myArray[i]+'</option>');
+
+                }
+                $("#type").select2();
+                $("#table1").append(data.tablesdata);
+                $('#datatable_wrapper').DataTable({ 'responsive': true,});
+                $("#datatable_wrapper").css("width","100%");
+                $("#table2").append(data.tablesdata2);
+                $('#datatable_wrapper_2').DataTable({ 'responsive': true});
+                $("#datatable_wrapper_2").css("width","100%");
+                $("#cardshow").show();
+            }else{
+
+                alert("Invalid File");
+              
+            }
+        })
+  
+  event.preventDefault();
+});
+} 
+
+        </script>
+{% endblock extra_javascript %}
