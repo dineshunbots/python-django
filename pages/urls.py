@@ -35,6 +35,7 @@ urlpatterns = [
     path('getapirecord', layview.getapirecord, name='getapirecord'),  
     path('gettypefromapi', layview.gettypefromapi, name='gettypefromapi'),   
     path('savefile', comview.savefile, name='savefile'),   
+    path('testcsv', comview.testcsv, name='testcsv'),    
     
 
     path('market-basket-analysis', comview.marketbasket, name='market-basket-analysis'), 

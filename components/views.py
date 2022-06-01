@@ -19,6 +19,10 @@ import base64
 import matplotlib.pyplot as pltnew
 import seaborn as sns
 
+
+import requests
+import json
+
 # UI-Elements
 class Alerts(LoginRequiredMixin,TemplateView):
     template_name = "components/ui-elements/ui-alerts.html"
@@ -444,9 +448,384 @@ def savefile(request):
             "name": name,
 
     }
+    #responses = {'wind_rose': "b641"}
     return JsonResponse(responses)       
 
 def handle_uploaded_file(f):  
     with open('files/'+f.name, 'wb+') as destination:  
         for chunk in f.chunks():  
-            destination.write(chunk)      
+            destination.write(chunk)   
+def testcsv(request):
+
+   
+  
+   
+
+
+    # # In[4]:
+
+    # # In[12]:
+
+
+    # res = requests.get("http://brilliantbidata.sunwebapps.com/api/MarketBasket?strFromDate=2021/01/01&strTodate=today")
+
+
+    # # In[13]:
+
+
+    # j = res.json()
+    # df = pd.DataFrame(j)
+
+
+    # # In[14]:
+
+
+    # df=df[df["VOCTYPE"].isin(["PS1","PSR"])]
+    # df
+
+
+    # # In[15]:
+
+
+    # df['NETVALUECC1'] = df['NETVALUECC1'].astype(float)
+    # df['PRICE_RANGE'] = pd.cut(x=df["NETVALUECC1"], bins=[0,2000,10000,20000,30000,40000,50000,60000,75000,600000],labels=['0-2000', '2000-10000', '10000-20000',"20000-30000","30000-40000","40000-50000","50000-60000","60000-75000","75000 and above"])
+    #     #pd.cut(df['some_col'], bins=[0,20,40,60], labels=['0-20', '20-40', '40-60']) 
+    # df=df.dropna()
+
+
+    # # In[16]:
+
+
+    # new={'PN':"diamond pendant",
+    # 'RN':"diamond ring",
+    # 'BT':"diamond bracelet",
+    # 'ER':"diamond earring",
+    # 'BN':"diamond bangle",
+    # 'NK':"diamond necklace",
+    # 'BR':"gold bracelet",
+    # 'GB':"gold bracelet",
+    # 'GN':"diamond necklae",
+    # 'REP':"jewellery repairing",
+    # 'CUF':"diamond cufflink",
+    # 'GBT':"gold bracelet with color stone",
+    # 'DIA':"gold chain",
+    # 'AN':"diamond anklet", 
+    # 'GE':"gold earring",
+    # 'SUT':"diamond suiti",
+    # 'GPN':"gold pendant with colour stone",
+    # 'GER':"gold earring",
+    # 'RP':"platinum ring",
+    # 'GNK':"gold necklace",
+    # 'NP':"nose pin", 
+    # 'GBNC':'gold bangle with colour stone',
+    # 'GHN':"gold hand chain",
+    # 'BRCH':"gold brooch",
+    # 'GP':"gold pendant",
+    # 'JEW':"gold chain",
+    # 'GRN':"gold ring with color stone",
+    # 'CRN':"diamond crown",
+    # 'HC':"hand chain",
+    # 'DJEW':"cufflink", 
+    # 'BB':"diamond belly button"}
+
+
+    # # In[24]:
+
+
+    # df.DESIGN_DESCRIPTION= df.DESIGN_DESCRIPTION.str.lower()
+    # df["Design"]=df["DESIGN_DESCRIPTION"].astype('category')
+    # #df["PRICE_RANGE"]=df["PRICE_RANGE"].astype('category')
+    # df=df.replace({'CATEGORY_CODE':new})
+    # df['Design'] = np.where(df['Design']== "diamond",df["CATEGORY_CODE"] , df['Design'])
+    # df["QUANTITY"]=1
+    # #df['VOCNO'] = pd.Categorical(df['VOCNO']
+    # #df['VOCNO'] = df['VOCNO'].cat.add_categories('Unknown')
+    # df2=df[["VOCNO","Design","PRICE_RANGE",'QUANTITY',"GROSS_WT1"]]
+    # df2['VOCNO'] = df2['VOCNO'].astype(float)
+    # df2['GROSS_WT1'] = df2['GROSS_WT1'].astype(float)
+    # df2['GROSS_WT1'] = df2['GROSS_WT1']
+
+    # #df2=df[["VOCNO","Design",'QUANTITY',"GROSS_WT1"]]
+
+    # #df2['VOCNO'] = pd.Categorical(df['VOCNO'],categories=df['VOCNO'].dropna().unique())
+    # #df2.to_csv("file one.csv")
+    # df2 = df2.astype({"PRICE_RANGE": object})
+
+
+    # # In[25]:
+
+
+    # basket=df2.groupby(["VOCNO","PRICE_RANGE"])["GROSS_WT1"].sum().unstack().reset_index().fillna(0).set_index("VOCNO")
+    # #basket=df2.groupby(["VOCNO","Design"])["GROSS_WT1"].sum().unstack().reset_index().fillna(0).set_index("VOCNO")
+    # basket=pd.DataFrame(basket)
+    # basket=basket.head(200)
+    #     #basket.to_csv('file7.csv')
+
+
+    # # In[26]:
+
+
+
+    # def encode_unit(x):
+    #     if x <= 0:
+    #         return 0
+    #     if x >= 1:
+    #         return 1
+            
+
+
+    # # In[27]:
+
+
+    # basket_set = basket.applymap(encode_unit)
+    #     #basket_set.to_csv('file4.csv')
+    # basket_set.dropna()
+
+
+    # # In[29]:
+
+
+    # frequent_itemsets = apriori(basket_set, min_support=0.08, use_colnames=True)
+    #     #print (frequent_itemsets)
+    # rules = association_rules(frequent_itemsets, metric="lift", min_threshold=1)
+    # rules["antecedents"] = rules["antecedents"].apply(lambda x: ', '.join(list(x))).astype("unicode")
+    # rules["consequents"] = rules["consequents"].apply(lambda x: ', '.join(list(x))).astype("unicode")
+    # rules
+    # rules
+    # print(rules)
+
+
+    # # In[59]:
+
+
+    # support=rules['support'].values
+    # confidence=rules['confidence'].values
+    # import random
+
+
+    # # In[60]:
+
+
+    # for i in range (len(support)):
+    #     support[i] = support[i] + 0.0025 * (random.randint(1,10) - 5) 
+    #     confidence[i] = confidence[i] + 0.0025 * (random.randint(1,10) - 5)
+    
+    # pltnew.scatter(support, confidence,   alpha=0.5, marker="o")
+    # pltnew.xlabel('support')
+    # pltnew.ylabel('confidence') 
+    # pltnew.show()
+
+
+    # # In[91]:
+
+
+    # rules
+
+
+    # # In[92]:
+
+
+    # A="10000-20000"
+
+
+    # # In[93]:
+
+
+    # new=rules.loc[rules.antecedents == A]
+
+
+    # # In[94]:
+
+
+    # new
+
+
+    # # In[95]:
+
+
+    # new1=new.sort_values(by=['lift'], ascending=False)
+
+
+    # # In[96]:
+
+
+    # new1
+
+
+    # # In[97]:
+
+
+    # new1=new1.head(2)
+
+
+    # # In[98]:
+
+
+    # new_list=new1['consequents'].tolist()
+
+
+    # # In[99]:
+
+
+    # new_list
+
+
+    # # In[100]:
+
+
+    # B= new_list[0]
+    # C = new_list[1]
+
+
+    # # In[102]:
+
+
+    # print("the recomended prodect for ", A ,"IS ",B," ",C)
+
+
+    # # In[ ]:
+
+
+
+
+
+    # # In[ ]:
+
+
+
+
+
+    # # In[ ]:
+
+
+
+
+
+    # # In[ ]:
+
+
+
+    # rules.columns = map(str.upper, rules.columns)
+
+    # rules.to_csv('rules.csv')
+
+
+    # # In[44]:
+
+
+
+
+    # rules["SUPPORT"] = pd.Series([round(val, 2) for val in rules["SUPPORT"]], index = rules.index)
+    # rules["SUPPORT"]=rules["SUPPORT"]*100
+
+
+    # # In[45]:
+
+
+    # def rules_to_coordinates(rules):
+    #     rules['antecedent'] = rules['antecedents'].apply(lambda antecedent: list(antecedent)[0])
+    #     rules['consequent'] = rules['consequents'].apply(lambda consequent: list(consequent)[0])
+    #     rules['rule'] = rules.index
+    #     return rules[['antecedent','consequent','rule']]
+
+
+    # # In[46]:
+
+
+    # from pandas.plotting import parallel_coordinates
+
+    # # Compute the frequent itemsets
+    # #frequent_itemsets = apriori(onehot, min_support = 0.15, 
+    # #                           use_colnames = True, max_len = 2)
+
+    # # Compute rules from the frequent itemsets
+    # rules = association_rules(frequent_itemsets, metric = 'confidence', 
+    #                         min_threshold = 0.55)
+
+    # # Convert rules into coordinates suitable for use in a parallel coordinates plot
+    # coords = rules_to_coordinates(rules.head(40))
+
+    # # Generate parallel coordinates plot
+    # pltnew.figure(figsize=(4,8))
+    # parallel_coordinates(coords, 'rule')
+    # pltnew.legend([])
+    # pltnew.grid(True)
+    # pltnew.show()
+
+
+    # # In[47]:
+
+
+    # rules = association_rules(frequent_itemsets, metric='support', 
+    #                         min_threshold = 0.0)
+
+    # # Generate scatterplot using support and confidence
+    # pltnew.figure(figsize=(10,6))
+    # sns.scatterplot(x = "support", y = "confidence", data = rules)
+    # pltnew.margins(0.01,0.01)
+    # pltnew.show()
+
+
+    # # In[48]:
+
+
+    # pltnew.figure(figsize=(10,6))
+    # sns.scatterplot(x = "support", y = "confidence", 
+    #                 size = "lift", data = rules)
+    # pltnew.margins(0.01,0.01)
+    # pltnew.show()
+
+
+    # # In[49]:
+
+
+    # import plotly.express as px
+    # from pandas.plotting import parallel_coordinates
+
+
+    #     # Compute the frequent itemsets
+    #     #frequent_itemsets = apriori(onehot, min_support = 0.15, 
+    #     #                           use_colnames = True, max_len = 2)
+
+    #     # Compute rules from the frequent itemsets
+    # rules = association_rules(frequent_itemsets, metric = 'confidence', 
+    #                         min_threshold = 0.55)
+
+    #     # Convert rules into coordinates suitable for use in a parallel coordinates plot
+    # coords = rules_to_coordinates(rules.head(40))
+
+    #     # Generate parallel coordinates plot
+        
+    # fig=px.parallel_coordinates(rules, ['antecedents', 'consequents'] )
+    # #parallel_coordinates(coords, 'rule')
+    # #px.legend([])
+    # #px.grid(True)
+    # #px.title(' parallel coordinates to visualize rules', fontsize=15,color="blue")
+    # fig.show()
+
+
+    # # In[50]:
+
+
+    # rules.columns =["antecedents","consequents",'antecedentSupport','consequentSupport',"support","confidence","lift","leverage","conviction"]
+
+
+    # # In[51]:
+
+
+    # rules
+
+
+    # # In[53]:
+
+
+    # pltnew.rcParams['figure.figsize'] = (10,6)
+    # color = pltnew.cm.inferno(np.linspace(0,1,20))
+    # rules['antecedents'].value_counts().head(20).plot.bar(color = color)
+    # pltnew.title('Top 20 Most Frequent Items')
+    # pltnew.ylabel('Counts')
+    # pltnew.xlabel('Items')
+    # pltnew.show()
+
+
+    return render(request, template_name='pages/utility/chart3.html', context={'wind_rose': "",})
