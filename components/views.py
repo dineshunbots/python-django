@@ -141,7 +141,7 @@ def savefile(request):
     #df.Number
     df.tail(30)
 
-    df['PRICE_RANGE'] = pd.cut(x=df["NETVALUECC1"], bins=[0,2000,10000,20000,30000,40000,50000,60000,75000,600000],labels=['0-2000', '2000-10000', '10000-20000',"20000-30000","30000-40000","40000-50000","50000-60000","60000-75000","75000 and above"])
+    df['PRICE_RANGE'] = pd.cut(x=df["NETVALUECC1"], bins=[0,2000,10000,20000,30000,40000,50000,60000,75000,600000],labels=['0-2K', '2k-10k', '10k-20k',"20k-30k","30k-40k","40k-50k","50k-60k","60k-75k","75k and above"])
         #pd.cut(df['some_col'], bins=[0,20,40,60], labels=['0-20', '20-40', '40-60']) 
     df=df.dropna()
 
@@ -258,7 +258,9 @@ def savefile(request):
     parallel_coordinates(coords, 'rule')
     pltnew.legend([])
     pltnew.grid(True)
-    pltnew.title(' Parallel coordinates to visualize rules', fontsize=15,color="#0094cb",loc='left')
+    pltnew.title(' Parallel Coordinates to Visualize Rules', fontsize=15,color="#0094cb",loc='left')
+    # pltnew.ylabel('Antecedents')
+    # pltnew.xlabel('Consequents')
     flikes1 = BytesIO()
     pltnew.savefig(flikes1,bbox_inches='tight')
     pltnew.tight_layout()
@@ -273,7 +275,7 @@ def savefile(request):
 
     fig2=pltnew.figure(figsize=(10,5))
     #pltnew.title('Left Title', loc='left')
-    pltnew.title('Optimality of the support-confidence border ', fontsize=15,color="#0094cb",loc='left')
+    pltnew.title('Optimality of the Support-Confidence Border ', fontsize=15,color="#0094cb",loc='left')
     sns.scatterplot(x = "support", y = "confidence", 
                     size = "lift", data = rules)#.set(title="Optimality of the support-confidence border")
 
@@ -361,7 +363,7 @@ def savefile(request):
     parallel_coordinates(coords, 'rule')
     pltnew.legend([])
     pltnew.grid(True)
-    pltnew.title(' Parallel coordinates to visualize rules', fontsize=15,color="#0094cb",loc='left')
+    pltnew.title(' Parallel Coordinates to Visualize Rules', fontsize=15,color="#0094cb",loc='left')
     flikes4 = BytesIO()
     pltnew.savefig(flikes4,bbox_inches='tight')
     pltnew.tight_layout()
@@ -391,7 +393,7 @@ def savefile(request):
   
     color = pltnew.cm.rainbow(np.linspace(0, 1, 40))
     df['Design'].value_counts().head(40).plot.bar(color = color, figsize=(13,5))
-    pltnew.title('frequency of most popular items', fontsize = 20)
+    pltnew.title('Frequency of Most Popular Items', fontsize = 20)
     pltnew.xticks(rotation = 90 )
     pltnew.grid()
     #pltnew.show()

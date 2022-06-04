@@ -70,8 +70,12 @@
                                         <br/>
                                         <div class="row">
                                             <div class="col-12" >
+                                                <div id="table1"></div>
+                                            </div>
+                                            <div class="col-12" >
                                                 <div id="table"></div>
                                             </div>
+                                           
                                             <div class="col-6" >
                                                 <img id="apiimage" style="display:none;" src='' >
                                             </div>
@@ -144,7 +148,7 @@
          <script src="{% static 'js/pages/sweet-alerts.init.js' %}"></script>
 
         <script>
-            	$('#datatable_wrapper').DataTable({ 'responsive': true});
+            	//$('#datatable_wrapper').DataTable({ 'responsive': true});
                 
                 function reset(){
                     localStorage.setItem("chart0", "");
@@ -168,9 +172,11 @@
                     $("#apiimage").show();
                     $('#apiimage').prop("src", "data:image/png;base64,"+localStorage.getItem("chart0"));
                     $("#table").append(localStorage.getItem("table"));
+                    $("#table1").append(localStorage.getItem("table1"));
                     $("#fdate").val(localStorage.getItem("fdate"));
                     $("#tdate").val(localStorage.getItem("tdate"));
                     $('#datatable_wrapper_3').DataTable({ 'responsive': true});
+                    $('#datatable_wrapper').DataTable({ 'responsive': true});
                     $("#view_button").show();
         }
     });
@@ -180,6 +186,7 @@
         $("#apiimage2").hide();
         $("#apiimage3").hide();
         $("#table").empty();
+        $("#table1").empty();
         $('#apiimage').prop("src", "");
         $("#view_button").hide();
         //alert(type);
@@ -224,11 +231,14 @@
                     localStorage.setItem("chart2", response.chart2);
                     localStorage.setItem("chart0", response.res);
                     localStorage.setItem("table", response.table);
+                    localStorage.setItem("table1", response.table1);
                     localStorage.setItem("fdate", fdate);
                     localStorage.setItem("tdate", tdate);
                     localStorage.setItem("list",  response.list);
                     $("#table").append(response.table);
                     $('#datatable_wrapper_3').DataTable({ 'responsive': true});
+                    $("#table1").append(response.table1);
+                    $('#datatable_wrapper').DataTable({ 'responsive': true});
                     $("#view_button").show();
 
                 }else{

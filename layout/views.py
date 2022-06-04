@@ -201,6 +201,12 @@ def gettypefromapi(request):
     basket1=df21.groupby(["VOCNO","DESIGN_DESCRIPTION"])["QUANTITY"].sum().unstack().reset_index().fillna(0).set_index("VOCNO")
     basket1=pd.DataFrame(basket1)
     basket1.head(300)
+
+    def encode_unit(x):
+        if x <= 0:
+            return 0
+        if x >= 1:
+            return 1
     
     basket_set1 = basket1.applymap(encode_unit)
     basket_set1
@@ -252,9 +258,12 @@ def getapirecord(request):
     df
 
     df['NETVALUECC1'] = df['NETVALUECC1'].astype(float)
-    df['PRICE_RANGE'] = pd.cut(x=df["NETVALUECC1"], bins=[0,2000,10000,20000,30000,40000,50000,60000,75000,600000],labels=['0-2000', '2000-10000', '10000-20000',"20000-30000","30000-40000","40000-50000","50000-60000","60000-75000","75000 and above"])
+    df['PRICE_RANGE'] = pd.cut(x=df["NETVALUECC1"], bins=[0,2000,10000,20000,30000,40000,50000,60000,75000,600000],labels=['0-2K', '2k-10k', '10k-20k',"20k-30k","30k-40k","40k-50k","50k-60k","60k-75k","75k and above"])
      
     df=df.dropna()
+
+    #html_table = df.to_html(justify=CENTER,index=False,classes="table table-bordered dt-responsive",table_id="datatable_wrapper")    
+
 
     new={'PN':"diamond pendant",
     'RN':"diamond ring",
@@ -310,14 +319,14 @@ def getapirecord(request):
     df2=df[["VOCNO","Design","PRICE_RANGE",'QUANTITY',"GROSS_WT1"]]
     df2['VOCNO'] = df2['VOCNO'].astype(float)
     df2['GROSS_WT1'] = df2['GROSS_WT1'].astype(float)
-    df2['GROSS_WT1'] = df2['GROSS_WT1']
+    
 
-    df2 = df2.astype({"PRICE_RANGE": object})
+    #df2 = df2.astype({"PRICE_RANGE": object})
 
-    basket=df2.groupby(["VOCNO","PRICE_RANGE"])["GROSS_WT1"].sum().unstack().reset_index().fillna(0).set_index("VOCNO")
+    basket=df2.groupby(["VOCNO","Design"])["GROSS_WT1"].sum().unstack().reset_index().fillna(0).set_index("VOCNO")
     #basket=df2.groupby(["VOCNO","Design"])["GROSS_WT1"].sum().unstack().reset_index().fillna(0).set_index("VOCNO")
     basket=pd.DataFrame(basket)
-    basket=basket.head(200)
+    #basket=basket.head(200)
     
     def encode_unit(x):
         if x <= 0:
@@ -330,10 +339,41 @@ def getapirecord(request):
     basket_set.dropna()
 
     frequent_itemsets = apriori(basket_set, min_support=0.08, use_colnames=True)
+
+   
+    
+    rules = association_rules(frequent_itemsets, metric="lift", min_threshold=1)
+    rules["antecedents"] = rules["antecedents"].apply(lambda x: ', '.join(list(x))).astype("unicode")
+    rules["consequents"] = rules["consequents"].apply(lambda x: ', '.join(list(x))).astype("unicode")
+    # rules['antecedents'] = rules['antecedents'].apply(lambda antecedent: list(antecedent)[0])
+    # rules['consequents'] = rules['consequents'].apply(lambda consequent: list(consequent)[0])
+    rules["lift"] = round(rules["lift"], 2)
+    rules["confidence"] = round(rules["confidence"], 2)
+    rules=rules.head(40)
+    rules= rules.sort_values(by = 'confidence', ascending = False)
+    #rules.columns = map(str.upper, rules.columns)
+    rules.columns =["Antecedents","Consequents",'AntecedentSupport','ConsequentSupport',"Support","Confidence","Lift","Leverage","Conviction"]
+    rules= rules.iloc[:, :-2]
+    html_table = rules.to_html(justify=CENTER,index=False,classes="table table-bordered dt-responsive",table_id="datatable_wrapper")    
+        
+    df2 = df2.astype({"PRICE_RANGE": object})
+    basket=df2.groupby(["VOCNO","PRICE_RANGE"])["QUANTITY"].sum().unstack().reset_index().fillna(0).set_index("VOCNO")
+    basket=pd.DataFrame(basket)
+    basket_set = basket.applymap(encode_unit)
+
+    frequent_itemsets = apriori(basket_set, min_support=0.08, use_colnames=True)
         #print (frequent_itemsets)
     rules = association_rules(frequent_itemsets, metric="lift", min_threshold=1)
     rules["antecedents"] = rules["antecedents"].apply(lambda x: ', '.join(list(x))).astype("unicode")
     rules["consequents"] = rules["consequents"].apply(lambda x: ', '.join(list(x))).astype("unicode")
+    rules["lift"] = round(rules["lift"], 2)
+    rules["confidence"] = round(rules["confidence"], 2)
+    rules["leverage"] = round(rules["leverage"], 2)
+    rules["conviction"] = round(rules["conviction"], 2)
+    #rules=rules.head(40)
+    #rules= rules.sort_values(by = 'confidence', ascending = False)
+    rules.columns =["Antecedents","Consequents",'AntecedentSupport','ConsequentSupport',"Support","Confidence","Lift","Leverage","Conviction"]
+    #rules= rules.iloc[:, :-2]
     rules
     #rules
     #print(rules)
@@ -427,8 +467,8 @@ def getapirecord(request):
     # rules 
     html_tables = rules.to_html(justify=CENTER,index=False,classes="table table-bordered dt-responsive",table_id="datatable_wrapper_3")    
 
-    support=rules['support'].values
-    confidence=rules['confidence'].values
+    support=rules['Support'].values
+    confidence=rules['Confidence'].values
     import random
     for i in range (len(support)):
         support[i] = support[i] + 0.0025 * (random.randint(1,10) - 5) 
@@ -436,8 +476,8 @@ def getapirecord(request):
 
     fig=plt.figure(figsize=(6,5))        
     plt.scatter(support, confidence,   alpha=0.5, marker="o")
-    plt.xlabel('support')
-    plt.ylabel('confidence') 
+    plt.xlabel('Support')
+    plt.ylabel('Confidence') 
     #plt.show()
     flike1 = io.BytesIO()
     
@@ -565,6 +605,7 @@ def getapirecord(request):
                     "chart2":b643,
                     "chart3":b647,
                     "table":html_tables,
+                    "table1":html_table,
                     "list": listToStr,
                     
     }

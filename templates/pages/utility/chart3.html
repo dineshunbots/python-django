@@ -4,6 +4,9 @@
 {% block content %}
 <link href="{% static 'libs/select2/dist/css/select2.min.css' %}" rel="stylesheet" type="text/css">
 
+   <!-- Sweet Alert-->
+   <link href="{% static 'libs/sweetalert2/dist/sweetalert2.min.css' %}" rel="stylesheet" type="text/css" />
+
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
                 <div class="page-content">
                     <div class="container-fluid">
@@ -36,13 +39,13 @@
                                         <div class="row">
                                             <div class="col-4" >
                                                 <label class="form-label">Design</label>
-                                                <select class="form-control select2" id="types">
+                                                <select class="form-control select2" id="types" onchange="getimages()">
                                                     <option value="">Select</option>
                                                     
                                               
                                                 </select>
                                             </div>
-                                            <div class="col-2" style="align-self: self-end;"><button type="button" onclick="getimages()" class="btn btn-sm btn-primary">Submit</button></div>
+                                            <div class="col-2" style="align-self: self-end;"><!--<button type="button" onclick="getimages()" class="btn btn-sm btn-primary">Submit</button>--></div>
                                            </div>
                                            <br/>
                                         
@@ -75,6 +78,12 @@
                 <!-- End Page-content -->
 {% endblock content %}
 {% block extra_javascript %}
+ <!-- Sweet Alerts js -->
+ <script src="{% static 'libs/sweetalert2/dist/sweetalert2.min.js' %}"></script>
+
+ <!-- Sweet alert init js-->
+ <script src="{% static 'js/pages/sweet-alerts.init.js' %}"></script>
+
 <script src="{% static 'libs/select2/dist/js/select2.min.js' %}"></script>
         <script>
             
@@ -109,8 +118,19 @@
         var type = $("#types").val();
         var fdate = localStorage.getItem("fdate");
         var tdate = localStorage.getItem("tdate");
-        //alert(type);
+       // alert(type);
+
+       
         if(type !=""){
+           
+            Swal.fire({
+            title: 'Progressing',
+            html: 'Please Wait.',
+            confirmButtonColor: "#0bb197",
+            }).then(function (result) {
+            })
+            Swal.showLoading();
+
             $.ajax({
             type: "POST",
             data:{'type':type,'fdate':fdate,'tdate':tdate},
@@ -118,6 +138,7 @@
             dataType:"json",
             success: function(response){
                 console.log(response);
+                Swal.close();
                 if(response.Status == "SUCCESS"){
                     $("#apiimage2").show();
                     $('#apiimage2').prop("src", "data:image/png;base64,"+response.res);
