@@ -183,6 +183,7 @@ def savefile(request):
     df["Design"]=df["Design"].astype('category')
     df=df.replace({'Category_Code':new})
     df['Design'] = np.where(df['Design']== "diamond",df["Category_Code"] , df['Design'])
+    df['Design'] = np.where(df['Design']== "",df["Category_Code"] , df['Design'])
     dess = df['Design'].unique()
     df["QUANTITY"]=1
     df2=df[["VOCNO","Design",'QUANTITY',"PRICE_RANGE"]]
