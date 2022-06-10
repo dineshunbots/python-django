@@ -68,15 +68,21 @@
                                                 </div> 
                                         </div>  
                                         <br/>
+                                        
                                         <div class="row">
+                                            <div id="heading1" style="display:none;"><h4 style="text-align: center;">Design Market Basket</h4></div><br>
                                             <div class="col-12" >
+                                                
                                                 <div id="table1"></div>
+                                                
                                             </div>
+                                            <div id="heading2" style="display:none;"><h4 style="text-align: center;">Price Range Market Basket</h4></div><br>
                                             <div class="col-12" >
+                                               
                                                 <div id="table"></div>
                                             </div>
                                            
-                                            <div class="col-6" >
+                                            <div class="col-12" style="text-align: center;">
                                                 <img id="apiimage" style="display:none;" src='' >
                                             </div>
                                         </div>
@@ -155,6 +161,7 @@
                     localStorage.setItem("chart1", "");
                     localStorage.setItem("chart2", "");
                     localStorage.setItem("table", "");
+                    localStorage.setItem("table1", "");
                     localStorage.setItem("fdate", "");
                     localStorage.setItem("tdate", "");
                     localStorage.setItem("list", "");
@@ -173,11 +180,14 @@
                     $('#apiimage').prop("src", "data:image/png;base64,"+localStorage.getItem("chart0"));
                     $("#table").append(localStorage.getItem("table"));
                     $("#table1").append(localStorage.getItem("table1"));
+                    $("#heading1").show();
+                    $("#heading2").show();
                     $("#fdate").val(localStorage.getItem("fdate"));
                     $("#tdate").val(localStorage.getItem("tdate"));
                     $('#datatable_wrapper_3').DataTable({ 'responsive': true});
                     $('#datatable_wrapper').DataTable({ 'responsive': true});
                     $("#view_button").show();
+                   
         }
     });
     function getapirecord(){
@@ -189,6 +199,8 @@
         $("#table1").empty();
         $('#apiimage').prop("src", "");
         $("#view_button").hide();
+        $("#heading1").hide();
+        $("#heading2").hide();
         //alert(type);
 
 
@@ -232,6 +244,8 @@
                     localStorage.setItem("chart0", response.res);
                     localStorage.setItem("table", response.table);
                     localStorage.setItem("table1", response.table1);
+                    $("#heading1").show();
+                    $("#heading2").show();
                     localStorage.setItem("fdate", fdate);
                     localStorage.setItem("tdate", tdate);
                     localStorage.setItem("list",  response.list);

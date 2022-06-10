@@ -339,11 +339,11 @@ def gettypefromapi(request):
         support[i] = support[i] + 0.0025 * (random.randint(1,10) - 5) 
         confidence[i] = confidence[i] + 0.0025 * (random.randint(1,10) - 5)
     
-    plt.scatter(support, confidence,   alpha=0.5, marker="o")
-    plt.xlabel('support')
-    plt.ylabel('confidence') 
-    #plt.show()
-    plt.close() 
+    # plt.scatter(support, confidence,   alpha=0.5, marker="o")
+    # plt.xlabel('support')
+    # plt.ylabel('confidence') 
+    # #plt.show()
+    # plt.close() 
 
     A="10000-20000"
 
@@ -358,18 +358,19 @@ def gettypefromapi(request):
     #B = new_list[0]
     #C = new_list[1]
     #print("the recomended prodect for ", A ,"IS ",B," ",C)
-    color = plt.cm.rainbow(np.linspace(0, 1, 40))
-    dfs['Design'].value_counts().head(40).plot.bar(color = color, figsize=(13,5))
-    plt.title('frequency of most popular items', fontsize = 20)
-    plt.xticks(rotation = 90 )
-    plt.grid()
-    #plt.show()
-    plt.close() 
+    #color = plt.cm.rainbow(np.linspace(0, 1, 40))
+    #dfs['Design'].value_counts().head(40).plot.bar(color = color, figsize=(13,5))
+    # plt.title('frequency of most popular items', fontsize = 20)
+    # plt.xticks(rotation = 90 )
+    # plt.grid()
+    # #plt.show()
+    # plt.close() 
 
     b ='gold ring'
     A ="diamond earring"
 
     import networkx as nx
+    import mplcursors
     rules['diamond'] = type
     diamond = rules.truncate(before = -1, after = 70)
     diamond = nx.from_pandas_edgelist(diamond, source = 'diamond', target = 'antecedents', edge_attr = True)
@@ -384,17 +385,27 @@ def gettypefromapi(request):
     plt.rcParams['figure.figsize'] = (13, 13)
     pos = nx.spring_layout(diamond)
     color = plt.cm.Set1(np.linspace(0, 40, 1))
-    nx.draw_networkx_nodes(diamond, pos, node_size = 16000, node_color = "#336699")
+    nodes = nx.draw_networkx_nodes(diamond, pos, node_size = 16000, node_color = "#336699")
     nx.draw_networkx_edges(diamond, pos, width = 3, alpha = 0.6, edge_color = 'black')
     nx.draw_networkx_labels(diamond, pos, font_size = 7.5, font_family = 'areal',font_color = "white")
+    def update_annot(sel):
+        node_index = sel.target.index
+        node_name = list(diamond.nodes)[node_index]
+        node_attr = diamond.nodes[node_name]
+        text = node_name + ' ' + '\n'.join(f'{k}: {v}' for k, v in node_attr.items())
+        sel.annotation.set_text(text)
+
+    cursor = mplcursors.cursor(nodes, hover=True)
+    cursor.connect('add', update_annot)
     plt.axis('off')
     plt.grid()
-    plt.title('Top 15 First Choices', fontsize = 20)
+    plt.title('Network Graph', fontsize = 20)
     #plt.show()
     flikes6new = io.BytesIO()
     plt.savefig(flikes6new,bbox_inches='tight')
     plt.tight_layout()
     b647 = base64.b64encode(flikes6new.getvalue()).decode()
+    
     
     result = "SUCCESS"
     responses = {
@@ -891,7 +902,7 @@ def getapirecord(request):
     nx.draw_networkx_labels(diamond, pos, font_size = 7.5, font_family = 'areal',font_color = "white")
     plt.axis('off')
     plt.grid()
-    plt.title('Top 15 First Choices', fontsize = 20)
+    plt.title('Network Graph', fontsize = 20)
     #plt.show()
     flikes6new = io.BytesIO()
     plt.savefig(flikes6new,bbox_inches='tight')
