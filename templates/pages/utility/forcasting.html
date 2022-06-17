@@ -1,0 +1,310 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block title %}Chart{% endblock title %}
+{% block extra_css %}
+        <!-- DataTables -->
+        <link href="{% static 'libs/select2/dist/css/select2.min.css' %}" rel="stylesheet" type="text/css">
+        <link href="{% static 'libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css' %}" rel="stylesheet" type="text/css" />
+        <link href="{% static 'libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css' %}" rel="stylesheet" type="text/css" />
+
+        <!-- Responsive datatable examples -->
+        <link href="{% static 'libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css' %}" rel="stylesheet" type="text/css" />     
+         <!-- Sweet Alert-->
+         <link href="{% static 'libs/sweetalert2/dist/sweetalert2.min.css' %}" rel="stylesheet" type="text/css" />
+{% endblock extra_css %}
+{% block content %}
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+                <div class="page-content">
+                    <div class="container-fluid">
+
+                        <!-- start page title -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                                    <h4 class="mb-sm-0" style="color:#336699 !important;">Forecasting</h4>
+
+                                    <div class="page-title-right">
+                                        <ol class="breadcrumb m-0">
+                                            <!-- <li class="breadcrumb-item"><a href="javascript: void(0);">Utility</a></li> -->
+                                            <!-- <li class="breadcrumb-item active">Forecasting</li> -->
+                                        </ol>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end page title -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body" >
+
+                                        <h3 class="mb-sm-0" style="color: #379ccb;">Forecasting</h3>
+                                        
+                                        <!-- <br>
+                                                                           <p>Forecasting is a data mining technique used by retailers to increase sales by better understanding customer purchasing patterns.
+                                            <br>It involves analyzing large data sets, such as purchase history, to reveal product groupings, as well as products that are likely to be purchased together.</p>
+                                            <br> -->
+                                            <form  class="" uk-grid  action="" method="post" id="form" data-application="update" enctype='multipart/form-data'>
+                                            <div class="row">
+                                                <div class="col-6" >
+                                                    <label class="form-label">File</label>
+                                                   <input class="form-control" type="file" name="file" id="file"/>
+                                                </div>
+                                                <div class="col-1" style="align-self: self-end;"><button type="submit" class="btn btn-primary">Submit</button></div>
+                                                <!-- <div class="col-3" style="align-self: self-end;">  <a class="btn btn-outline-info waves-effect waves-light" href="Forecasting data.csv" download>Download Sample Template</a> </div> -->
+                                            </div>
+                                            <br>
+                                          
+                                            <br>
+                                            
+                                            </form>
+                                            <div id="cardshow" style="display:none;">  
+                                                <div class="row">
+                                                    <div class="col-4" >
+                                                        <label class="form-label">Branch</label>
+                                                        <select class="form-control select2" id="type" onchange="getnewchart()">  
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-4" >
+                                                        <label class="form-label">Design</label>
+                                                        <select class="form-control select2" id="types" onchange="getnewchart()">  
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-4" >
+                                                        <label class="form-label">Type</label>    <br>
+                                                        <input type="radio" id="month" name="datetype" checked onclick="getnewchart()">
+                                                        <label for="month">Monthly</label><br>
+                                                        <input type="radio" id="day" name="datetype" onclick="getnewchart()">
+                                                        <label for="day">Day</label><br> 
+                                                    </div>
+                                                   
+                                                </div> 
+                                               
+                                            <hr/>
+                                            <br>
+                                               
+                                            <h3 class="mb-sm-0" style="color: #379ccb;">Forecasting with Design</h3>
+                                            <br>
+                                        <!-- {{ tablesdata | safe }} -->
+                                        <div id="table1"></div>
+                                        
+                                        <hr/>
+                                        <label class="form-label">MAE : <span id="mae"></span></label>
+                                        <hr/>
+                                        <!-- <h3>Graph </h3> -->
+                                        <div style="text-align-last: center;"> <iframe src='templates/pages/utility/forecastingchart.html'  width="900" height="700" id="myFrame" frameborder="0"></iframe></div>
+                                       
+                                        <hr/>
+
+                                       
+                                        
+                                      
+                                        
+                                      
+                                          
+                                         
+                                        </div>
+ 
+                                    </div>
+                                </div>
+                            </div> <!-- end col -->
+                        </div>
+                      
+                        <!-- <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        
+                                      
+                                       
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                       -->
+
+                        
+
+                    </div> <!-- container-fluid -->
+                </div>
+                <!-- End Page-content -->
+{% endblock content %}
+{% block extra_javascript %}
+        <script src="{% static 'libs/select2/dist/js/select2.min.js' %}"></script>
+        <!-- Required datatable js -->
+        <script src="{% static 'libs/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+        <script src="{% static 'libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+        <!-- Buttons examples -->
+        <script src="{% static 'libs/datatables.net-buttons/js/dataTables.buttons.min.js' %}"></script>
+        <script src="{% static 'libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js' %}"></script>
+        <script src="{% static 'libs/jszip/dist/jszip.min.js' %}"></script>
+        <script src="{% static 'libs/pdfmake/build/pdfmake.min.js' %}"></script>
+        <script src="{% static 'libs/pdfmake/build/vfs_fonts.js' %}"></script>
+        <script src="{% static 'libs/datatables.net-buttons/js/buttons.html5.min.js' %}"></script>
+        <script src="{% static 'libs/datatables.net-buttons/js/buttons.print.min.js' %}"></script>
+        <script src="{% static 'libs/datatables.net-buttons/js/buttons.colVis.min.js' %}"></script>
+        <!-- Responsive examples -->
+        <script src="{% static 'libs/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
+        <script src="{% static 'libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js' %}"></script>
+
+        <!-- Datatable init js -->
+        <script src="{% static 'js/pages/datatables.init.js' %}"></script>
+
+       <!-- Sweet Alerts js -->
+       <script src="{% static 'libs/sweetalert2/dist/sweetalert2.min.js' %}"></script>
+
+       <!-- Sweet alert init js-->
+       <script src="{% static 'js/pages/sweet-alerts.init.js' %}"></script>
+        <script>
+            	$('#datatable_wrapper').DataTable({ 'responsive': true});
+            	$('#datatable_wrapper_2').DataTable({ 'responsive': true});
+                
+    $(document).ready(function(){
+
+        if((localStorage.getItem("email") == "" && localStorage.getItem("password") == "") || (localStorage.getItem("email") == null && localStorage.getItem("password") == null)){
+            //alert(localStorage.getItem("email"));
+            location.replace("/");
+        }
+    });
+    function getnewchart(){
+        var branch = $("#type").val();
+        var design = $("#types").val();
+        var type = "";
+        if($("#month").is(":checked")){
+            type = "Monthly";
+        }else{
+            type = "Daily";
+        }
+        if(branch !="" && design != "" && type != ""){
+
+            Swal.fire({
+            title: 'Progressing',
+            html: 'Please Wait.',
+            confirmButtonColor: "#0bb197",
+            }).then(function (result) {
+            // if (
+            //     result.dismiss === Swal.DismissReason.timer
+            // ) {
+            //     console.log('I was closed by the timer')
+            // }
+            })
+            Swal.showLoading();
+            $.ajax({
+            type: "POST",
+            data:{'branch':branch,'design':design,"type":type},
+            url: "getforecastingchart",
+            dataType:"json",
+            success: function(response){
+                console.log(response);
+                Swal.close();
+                if(response.Status == "SUCCESS"){
+
+                    document.getElementById("myFrame").src = "templates/pages/utility/forecastingchart.html";
+                    $("#table1").empty();
+                    $("#table1").append(response.tablesdata);
+                    $('#datatable_wrapper').DataTable({ 'responsive': true,});
+                    $('#mae').text(response.MAE);
+                    let frame = document.getElementById('myFrame');
+                frame.contentWindow.location.reload();
+
+                }else{
+                    alert("Incorrect Type");
+                }
+            }
+        });
+    }else{
+        alert("Please Select Name");
+    }
+    }
+
+
+
+
+    window.onload = function(){
+
+
+        
+var formEl = document.getElementById('form');
+formEl.addEventListener('submit', function(event) {
+
+    Swal.fire({
+            title: 'Progressing',
+            html: 'Please Wait.',
+            confirmButtonColor: "#0bb197",
+            }).then(function (result) {
+            // if (
+            //     result.dismiss === Swal.DismissReason.timer
+            // ) {
+            //     console.log('I was closed by the timer')
+            // }
+            })
+        Swal.showLoading();
+  var headers = new Headers();
+  headers.set('Accept', 'application/json');
+  var formData = new FormData();
+  for (var i = 0; i < formEl.length; ++i) {
+    if(formEl[i].name == "file"){
+        const fileField = document.querySelector('input[name="file"]');
+        formData.append('file', fileField.files[0]);
+    }else{
+        formData.append(formEl[i].name, formEl[i].value);
+      }    
+  }
+ 
+  var url = 'forecastingfile';
+  var fetchOptions = {
+    method: 'POST',
+    headers,
+    body: formData
+  };
+  
+  var responsePromise = fetch(url, fetchOptions);
+  responsePromise
+  	
+      .then(response => response.json())
+        .then(data => {
+             console.log(data);
+             Swal.close();
+            if(data.Status == 'SUCCESS') {
+                
+                
+                $('#mae').text(data.MAE);
+               
+                var list = data.type;
+                const myArray = list.split(",");
+                $("#type").empty();
+                for(i=0;i<=myArray.length;i++){
+                    $("#type").append('<option value="'+myArray[i]+'">'+myArray[i]+'</option>');
+
+                }
+                $("#type").select2();
+
+                var list = data.designtype;
+                const myArrays = list.split(",");
+                $("#types").empty();
+                for(i=0;i<=myArrays.length;i++){
+                    $("#types").append('<option value="'+myArrays[i]+'">'+myArrays[i]+'</option>');
+
+                }
+                $("#types").select2();
+
+                
+                $("#table1").append(data.tablesdata);
+                $('#datatable_wrapper').DataTable({ 'responsive': true,});
+                let frame = document.getElementById('myFrame');
+                frame.contentWindow.location.reload();
+                 $("#cardshow").show();
+            }else{
+
+                alert("Invalid File");
+              
+            }
+        })
+  
+  event.preventDefault();
+});
+} 
+
+        </script>
+{% endblock extra_javascript %}

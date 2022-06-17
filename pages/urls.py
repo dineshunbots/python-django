@@ -39,6 +39,10 @@ urlpatterns = [
     
 
     path('market-basket-analysis', comview.marketbasket, name='market-basket-analysis'), 
+    path('forecasting', comview.forecasting, name='forecasting'), 
+    path('forecastingfile', comview.forecastingfile, name='forecastingfile'), 
+    path('getforecastingchart', comview.getforecastingchart, name='getforecastingchart'), 
+    
     #path('market-basket-analysis', mailview.testapi, name='market-basket-analysis'), 
     #path('market-basket-analysis', views.marketbasketanalysis, name='market-basket-analysis'),    
     path('market-basket-analysis-api', layview.marketbasketanalysisapi, name='market-basket-analysis-api'),

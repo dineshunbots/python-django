@@ -23,6 +23,13 @@ import seaborn as sns
 import requests
 import json
 
+
+import math
+from urllib.error import URLError
+from fbprophet import Prophet
+import plotly.express as px
+import plotly.graph_objects as go
+
 # UI-Elements
 class Alerts(LoginRequiredMixin,TemplateView):
     template_name = "components/ui-elements/ui-alerts.html"
@@ -132,6 +139,325 @@ class Vector(LoginRequiredMixin,TemplateView):
     template_name = "components/maps/maps-vector.html"
 def marketbasket(request):
     return render(request, template_name='pages/utility/chart2new.html') 
+def forecasting(request):
+    return render(request, template_name='pages/utility/forcasting.html')     
+
+@csrf_exempt        
+def forecastingfile(request):   
+    handle_uploaded_file(request.FILES['file'])  
+    name = "files/"+request.FILES['file'].name
+    st.header("FORECASTING")
+    
+    file1 = st.sidebar # to align the input box 
+
+    headers = {
+        'selector': 'th:not(.index_name)',
+        'props': 'background-color: #000066; color: white;'
+    }
+
+    def button_False():
+        butt = False
+        butt_model = False
+        butt_stock = False
+
+    # main csv file
+    # with file1:
+    #main_data_file = st.file_uploader(name, type=["csv"])
+
+    # if not (main_data_file is not None):
+    #     st.error("Please upload both the files.")
+    # else:
+    all_data = pd.read_csv(name)
+
+    all_data= all_data[all_data["BRANCH_CODE"].isin(["SJGS","MKD","MCC","LMAD","MOE","RUS","RETOFF"])]
+
+    filter_list = [ i for i in all_data["BRANCH_CODE"].unique()]
+    design_list = [ i for i in all_data ["DESIGN_CODE"].unique()]
+        
+        
+    filt = st.sidebar.selectbox("Select a filter", filter_list, on_change=button_False)
+    holt = st.sidebar.selectbox("Select a holiday", design_list, on_change=button_False)
+    sales_type = st.radio( "Select level of Sales", ('Monthly','Daily'))
+    print(sales_type)
+    print(filt)
+    print(holt)
+            
+    if sales_type=="Monthly" :
+        if (filt != [] and holt != []):
+            #holiday_data=holiday_data
+            all_data_2=all_data.copy()
+        
+            all_data_int=all_data_2[all_data_2["BRANCH_CODE"] == filt]
+            all_data_int=all_data_int[all_data_int["DESIGN_CODE"]==holt]
+
+            all_data_2=all_data_int
+        
+            all_data_fn=all_data_2[["VOCDATE","Sales_quantity"]]
+            all_data_fn["VOCDATE"]= pd.to_datetime(all_data_fn['VOCDATE'], format='%d-%m-%Y')
+            df=all_data_fn.groupby(pd.Grouper(key='VOCDATE',freq='30D')).sum().reset_index()
+            daily_train_df=df.head(74)
+            daily_test_df=df.tail(18)
+
+            daily_train_df.columns = ['ds', 'y']
+            daily_test_df.columns=["ds","y"]
+
+            m = Prophet()
+            m.fit(daily_train_df)
+
+            daily_predictions_df = m.predict(daily_test_df)
+            daily_predictions=daily_predictions_df['yhat']
+
+            daily_predictions_1=[math.ceil(i) if i>0 else 0 for i in daily_predictions]
+            daily_test_df["Predictions"]=daily_predictions_1
+
+            fig = px.line(daily_train_df, x="ds", y="y", width=900, height=600, labels={
+                "ds": "YEAR",
+                "y": "Sales_qty"
+            
+                },)
+            fig.add_trace(go.Scatter(x=daily_test_df.ds, y=daily_test_df.Predictions,name="Prediction"))
+            #fig.show()
+            fig.write_html("templates/pages/utility/forecastingchart.html") 
+            st.plotly_chart(fig)
+            
+
+            final_df=pd.DataFrame(daily_test_df.tail(60))[["y","Predictions"]]
+            final_df.reset_index(inplace=True)
+            final_df.columns=["Date","Sales","Predictions"]
+        
+            mae=np.abs((final_df["Predictions"]-final_df["Sales"]))
+            MAE_mean=mae.mean()
+            MAE_mean=round(MAE_mean, 3)
+            st.write("MAE =",MAE_mean)
+        
+            st.dataframe(final_df)
+            html_table = final_df.to_html(justify=CENTER,index=False,classes="table table-bordered dt-responsive",table_id="datatable_wrapper")   
+           
+            
+    else:
+        print("hi")
+        if sales_type=="Daily":
+            if (filt != [] and holt != []):
+                #holiday_data=holiday_data
+                all_data_2=all_data.copy()
+
+                all_data_int=all_data_2[all_data_2["BRANCH_CODE"] == filt]
+                all_data_int=all_data_int[all_data_int["DESIGN_CODE"]==holt]
+
+                all_data_2=all_data_int
+                
+                all_data_fn=all_data_2[["VOCDATE","Sales_quantity"]]
+                all_data_fn["VOCDATE"]= pd.to_datetime(all_data_fn['VOCDATE'], format='%d-%m-%Y')
+                df=all_data_fn.groupby(pd.Grouper(key='VOCDATE',freq='1D')).sum().reset_index()
+                daily_train_df=df.head(74)
+                daily_test_df=df.tail(18)
+
+                daily_train_df.columns = ['ds', 'y']
+                daily_test_df.columns=["ds","y"]
+
+                m = Prophet()
+                m.fit(daily_train_df)
+
+                daily_predictions_df = m.predict(daily_test_df)
+                daily_predictions=daily_predictions_df['yhat']
+
+                daily_predictions_1=[math.ceil(i) if i>0 else 0 for i in daily_predictions]
+                daily_test_df["Predictions"]=daily_predictions_1
+
+                fig = px.line(daily_train_df, x="ds", y="y", width=900, height=600, labels={
+                "ds": "YEAR",
+                "y": "Sales_qty"
+            
+                })
+            
+                fig.add_trace(go.Scatter(x=daily_test_df.ds, y=daily_test_df.Predictions,name="Prediction"))
+            
+                st.plotly_chart(fig)
+                
+                final_df=pd.DataFrame(daily_test_df.tail(60))[["y","Predictions"]]
+                final_df.reset_index(inplace=True)
+                final_df.columns=["Date","Sales","Predictions"]
+            
+                mae=np.abs((final_df["Predictions"]-final_df["Sales"]))
+                MAE_mean=mae.mean()
+                MAE_mean=round(MAE_mean, 3)
+
+                st.write("MAE =",MAE_mean)
+
+                st.dataframe(final_df)
+                        
+        
+       
+    listToStr = ','.join([str(elem) for elem in filter_list])
+    listToStrnew = ','.join([str(elem) for elem in design_list])
+
+    result = "SUCCESS"
+    responses = {
+            'MAE':MAE_mean,
+            'tablesdata':html_table,
+            'type': listToStr,
+            'designtype': listToStrnew,
+            "Status": result,
+            "name": name
+
+    }
+    return JsonResponse(responses)      
+
+@csrf_exempt
+def getforecastingchart(request):
+
+    file1 = st.sidebar # to align the input box 
+
+    headers = {
+        'selector': 'th:not(.index_name)',
+        'props': 'background-color: #000066; color: white;'
+    }
+
+    def button_False():
+        butt = False
+        butt_model = False
+        butt_stock = False
+
+    
+    all_data = pd.read_csv("files/forecasting_data.csv")
+
+    all_data= all_data[all_data["BRANCH_CODE"].isin(["SJGS","MKD","MCC","LMAD","MOE","RUS","RETOFF"])]
+
+    filter_list = [ i for i in all_data["BRANCH_CODE"].unique()]
+    design_list = [ i for i in all_data ["DESIGN_CODE"].unique()]
+        
+        
+    # filt = st.sidebar.selectbox("Select a filter", filter_list, on_change=button_False)
+    # holt = st.sidebar.selectbox("Select a holiday", design_list, on_change=button_False)
+    # sales_type = st.radio( "Select level of Sales", ('Monthly','Daily'))
+    filt = request.POST['branch']
+    holt = request.POST['design']
+    sales_type = request.POST['type']
+    print(sales_type)
+    print(filt)
+    print(holt)
+            
+    if sales_type=="Monthly" :
+        if (filt != [] and holt != []):
+            #holiday_data=holiday_data
+            all_data_2=all_data.copy()
+        
+            all_data_int=all_data_2[all_data_2["BRANCH_CODE"] == filt]
+            all_data_int=all_data_int[all_data_int["DESIGN_CODE"]==holt]
+
+            all_data_2=all_data_int
+        
+            all_data_fn=all_data_2[["VOCDATE","Sales_quantity"]]
+            all_data_fn["VOCDATE"]= pd.to_datetime(all_data_fn['VOCDATE'], format='%d-%m-%Y')
+            df=all_data_fn.groupby(pd.Grouper(key='VOCDATE',freq='30D')).sum().reset_index()
+            daily_train_df=df.head(74)
+            daily_test_df=df.tail(18)
+
+            daily_train_df.columns = ['ds', 'y']
+            daily_test_df.columns=["ds","y"]
+
+            m = Prophet()
+            m.fit(daily_train_df)
+
+            daily_predictions_df = m.predict(daily_test_df)
+            daily_predictions=daily_predictions_df['yhat']
+
+            daily_predictions_1=[math.ceil(i) if i>0 else 0 for i in daily_predictions]
+            daily_test_df["Predictions"]=daily_predictions_1
+
+            fig = px.line(daily_train_df, x="ds", y="y", width=900, height=600, labels={
+                "ds": "YEAR",
+                "y": "Sales_qty"
+            
+                },)
+            fig.add_trace(go.Scatter(x=daily_test_df.ds, y=daily_test_df.Predictions,name="Prediction"))
+            #fig.show()
+            fig.write_html("templates/pages/utility/forecastingchart.html") 
+            st.plotly_chart(fig)
+            
+
+            final_df=pd.DataFrame(daily_test_df.tail(60))[["y","Predictions"]]
+            final_df.reset_index(inplace=True)
+            final_df.columns=["Date","Sales","Predictions"]
+        
+            mae=np.abs((final_df["Predictions"]-final_df["Sales"]))
+            MAE_mean=mae.mean()
+            MAE_mean=round(MAE_mean, 3)
+            st.write("MAE =",MAE_mean)
+        
+            st.dataframe(final_df)
+            html_table = final_df.to_html(justify=CENTER,index=False,classes="table table-bordered dt-responsive",table_id="datatable_wrapper")   
+           
+            
+    else:
+        print("hi")
+        if sales_type=="Daily":
+            if (filt != [] and holt != []):
+                #holiday_data=holiday_data
+                all_data_2=all_data.copy()
+
+                all_data_int=all_data_2[all_data_2["BRANCH_CODE"] == filt]
+                all_data_int=all_data_int[all_data_int["DESIGN_CODE"]==holt]
+
+                all_data_2=all_data_int
+                
+                all_data_fn=all_data_2[["VOCDATE","Sales_quantity"]]
+                all_data_fn["VOCDATE"]= pd.to_datetime(all_data_fn['VOCDATE'], format='%d-%m-%Y')
+                df=all_data_fn.groupby(pd.Grouper(key='VOCDATE',freq='1D')).sum().reset_index()
+                daily_train_df=df.head(74)
+                daily_test_df=df.tail(18)
+
+                daily_train_df.columns = ['ds', 'y']
+                daily_test_df.columns=["ds","y"]
+
+                m = Prophet()
+                m.fit(daily_train_df)
+
+                daily_predictions_df = m.predict(daily_test_df)
+                daily_predictions=daily_predictions_df['yhat']
+
+                daily_predictions_1=[math.ceil(i) if i>0 else 0 for i in daily_predictions]
+                daily_test_df["Predictions"]=daily_predictions_1
+
+                fig = px.line(daily_train_df, x="ds", y="y", width=900, height=600, labels={
+                "ds": "YEAR",
+                "y": "Sales_qty"
+            
+                })
+            
+                fig.add_trace(go.Scatter(x=daily_test_df.ds, y=daily_test_df.Predictions,name="Prediction"))
+                fig.write_html("templates/pages/utility/forecastingchart.html") 
+                st.plotly_chart(fig)
+                
+                final_df=pd.DataFrame(daily_test_df.tail(60))[["y","Predictions"]]
+                final_df.reset_index(inplace=True)
+                final_df.columns=["Date","Sales","Predictions"]
+            
+                mae=np.abs((final_df["Predictions"]-final_df["Sales"]))
+                MAE_mean=mae.mean()
+                MAE_mean=round(MAE_mean, 3)
+
+                st.write("MAE =",MAE_mean)
+
+                st.dataframe(final_df)
+                html_table = final_df.to_html(justify=CENTER,index=False,classes="table table-bordered dt-responsive",table_id="datatable_wrapper")   
+                  
+        
+       
+    listToStr = ','.join([str(elem) for elem in filter_list])
+    listToStrnew = ','.join([str(elem) for elem in design_list])
+
+    result = "SUCCESS"
+    responses = {
+            'MAE':MAE_mean,
+            'tablesdata':html_table,
+            'type': listToStr,
+            'designtype': listToStrnew,
+            "Status": result
+    }
+    return JsonResponse(responses) 
+     
+
 
 @csrf_exempt        
 def savefile(request):   
@@ -457,7 +783,9 @@ def savefile(request):
 def handle_uploaded_file(f):  
     with open('files/'+f.name, 'wb+') as destination:  
         for chunk in f.chunks():  
-            destination.write(chunk)   
+            destination.write(chunk)  
+
+
 def testcsv(request):
 
    
