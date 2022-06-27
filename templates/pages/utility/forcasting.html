@@ -13,6 +13,11 @@
          <link href="{% static 'libs/sweetalert2/dist/sweetalert2.min.css' %}" rel="stylesheet" type="text/css" />
 {% endblock extra_css %}
 {% block content %}
+<style>
+    #datatable_wrapper {
+    width: inherit !important;
+}
+</style>
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
                 <div class="page-content">
                     <div class="container-fluid">
@@ -87,13 +92,17 @@
                                             <h3 class="mb-sm-0" style="color: #379ccb;">Forecasting with Design</h3>
                                             <br>
                                         <!-- {{ tablesdata | safe }} -->
-                                        <div id="table1"></div>
+                                        <div class="row">
+                                            <div class="col-6"> <div id="table1"></div></div>
+                                            <div class="col-6" style="text-align: -webkit-center;"> <label class="form-label">MAE : <span id="mae"></span></label></div>
+                                        </div>
+                                       
                                         
-                                        <hr/>
-                                        <label class="form-label">MAE : <span id="mae"></span></label>
+                                        <!-- <hr/> -->
+                                       
                                         <hr/>
                                         <!-- <h3>Graph </h3> -->
-                                        <div style="text-align-last: center;"> <iframe src='templates/pages/utility/forecastingchart.html'  width="900" height="700" id="myFrame" frameborder="0"></iframe></div>
+                                        <div style="text-align-last: center;"> <iframe src="{% url 'viewforecastingchart' %}"  width="900" height="700" id="myFrame" frameborder="0"></iframe></div>
                                        
                                         <hr/>
 

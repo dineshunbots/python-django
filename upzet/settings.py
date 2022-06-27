@@ -79,7 +79,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+   
 
 
     # Configure the django-otp package. Note this must be after the
@@ -110,7 +110,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'upzet.wsgi.application'
-X_FRAME_OPTIONS = 'SAMEORIGIN'
+
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases

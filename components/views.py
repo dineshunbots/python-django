@@ -3,7 +3,9 @@ from django.views.generic.base import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http.response import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-
+from django.views.decorators.clickjacking import xframe_options_exempt
+# from django.views.decorators.clickjacking import xframe_options_deny
+# from django.views.decorators.clickjacking import xframe_options_sameorigin
 
 from tkinter import CENTER
 import streamlit as st
@@ -139,9 +141,13 @@ class Vector(LoginRequiredMixin,TemplateView):
     template_name = "components/maps/maps-vector.html"
 def marketbasket(request):
     return render(request, template_name='pages/utility/chart2new.html') 
+#@xframe_options_exempt  
 def forecasting(request):
-    return render(request, template_name='pages/utility/forcasting.html')     
-
+    return render(request, template_name='pages/utility/forcasting.html')  
+@xframe_options_exempt  
+def viewforecastingchart(request):
+    return render(request, template_name='pages/utility/forecastingchart.html') 
+#@xframe_options_sameorigin
 @csrf_exempt        
 def forecastingfile(request):   
     handle_uploaded_file(request.FILES['file'])  
