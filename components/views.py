@@ -227,9 +227,9 @@ def forecastingfile(request):
             st.plotly_chart(fig)
             
 
-            final_df=pd.DataFrame(daily_test_df.tail(60))[["y","Predictions"]]
+            final_df=pd.DataFrame(daily_test_df.tail(60))[["ds","y","Predictions"]]
             final_df.reset_index(inplace=True)
-            final_df.columns=["Date","Sales","Predictions"]
+            final_df.columns=["No","Date","Sales","Predictions"]
         
             mae=np.abs((final_df["Predictions"]-final_df["Sales"]))
             MAE_mean=mae.mean()
@@ -280,9 +280,9 @@ def forecastingfile(request):
             
                 st.plotly_chart(fig)
                 
-                final_df=pd.DataFrame(daily_test_df.tail(60))[["y","Predictions"]]
+                final_df=pd.DataFrame(daily_test_df.tail(60))[["ds","y","Predictions"]]
                 final_df.reset_index(inplace=True)
-                final_df.columns=["Date","Sales","Predictions"]
+                final_df.columns=["No","Date","Sales","Predictions"]
             
                 mae=np.abs((final_df["Predictions"]-final_df["Sales"]))
                 MAE_mean=mae.mean()
@@ -382,9 +382,9 @@ def getforecastingchart(request):
             st.plotly_chart(fig)
             
 
-            final_df=pd.DataFrame(daily_test_df.tail(60))[["y","Predictions"]]
+            final_df=pd.DataFrame(daily_test_df.tail(60))[["ds","y","Predictions"]]
             final_df.reset_index(inplace=True)
-            final_df.columns=["Date","Sales","Predictions"]
+            final_df.columns=["No","Date","Sales","Predictions"]
         
             mae=np.abs((final_df["Predictions"]-final_df["Sales"]))
             MAE_mean=mae.mean()
@@ -435,9 +435,9 @@ def getforecastingchart(request):
                 fig.write_html("templates/pages/utility/forecastingchart.html") 
                 st.plotly_chart(fig)
                 
-                final_df=pd.DataFrame(daily_test_df.tail(60))[["y","Predictions"]]
+                final_df=pd.DataFrame(daily_test_df.tail(60))[["ds","y","Predictions"]]
                 final_df.reset_index(inplace=True)
-                final_df.columns=["Date","Sales","Predictions"]
+                final_df.columns=["No","Date","Sales","Predictions"]
             
                 mae=np.abs((final_df["Predictions"]-final_df["Sales"]))
                 MAE_mean=mae.mean()

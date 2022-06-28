@@ -94,7 +94,7 @@
                                         <!-- {{ tablesdata | safe }} -->
                                         <div class="row">
                                             <div class="col-6"> <div id="table1"></div></div>
-                                            <div class="col-6" style="text-align: -webkit-center;"> <label class="form-label">MAE : <span id="mae"></span></label></div>
+                                            <div class="col-6" style="text-align: -webkit-center;"> <label class="form-label" style="font-size: x-large;color: #336699;">MAE : <span id="mae"></span></label></div>
                                         </div>
                                        
                                         
@@ -212,7 +212,13 @@
                     document.getElementById("myFrame").src = "templates/pages/utility/forecastingchart.html";
                     $("#table1").empty();
                     $("#table1").append(response.tablesdata);
-                    $('#datatable_wrapper').DataTable({ 'responsive': true,});
+                    $('#datatable_wrapper').DataTable({ 'responsive': true,  "columnDefs": [
+                        {
+                            "targets": [0],
+                            "visible": false,
+                            "searchable": false
+                        }
+                    ]});
                     $('#mae').text(response.MAE);
                     let frame = document.getElementById('myFrame');
                 frame.contentWindow.location.reload();
@@ -300,7 +306,13 @@ formEl.addEventListener('submit', function(event) {
 
                 
                 $("#table1").append(data.tablesdata);
-                $('#datatable_wrapper').DataTable({ 'responsive': true,});
+                $('#datatable_wrapper').DataTable({ 'responsive': true,  "columnDefs": [
+                        {
+                            "targets": [0],
+                            "visible": false,
+                            "searchable": false
+                        }
+                    ]});
                 let frame = document.getElementById('myFrame');
                 frame.contentWindow.location.reload();
                  $("#cardshow").show();
