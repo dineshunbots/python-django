@@ -94,14 +94,14 @@
                                         <!-- {{ tablesdata | safe }} -->
                                         <div class="row">
                                             <div class="col-6"> <div id="table1"></div></div>
-                                            <div class="col-6" style="text-align: -webkit-center;"> <label class="form-label" style="font-size: x-large;color: #336699;">MAE : <span id="mae"></span></label></div>
+                                            <div class="col-6" style="text-align: -webkit-center;"> <label class="form-label" style="font-size: x-large;color: #336699;">MAE : <span id="mae"></span></label><br> <label class="form-label" style="font-size: x-large;color: #336699;">Branch : <span id="branch"></span></label><br><label class="form-label" style="font-size: x-large;color: #336699;">Design : <span id="design"></span></label></div>
                                         </div>
                                        
                                         
                                         <!-- <hr/> -->
                                        
                                         <hr/>
-                                        <!-- <h3>Graph </h3> -->
+                                        <h3 style="text-align: -webkit-center;color: #379ccb;">Sales VS Predicted Sales </h3>
                                         <div style="text-align-last: center;"> <iframe src="{% url 'viewforecastingchart' %}"  width="900" height="700" id="myFrame" frameborder="0"></iframe></div>
                                        
                                         <hr/>
@@ -220,6 +220,8 @@
                         }
                     ]});
                     $('#mae').text(response.MAE);
+                    $('#branch').text(branch);
+                    $('#design').text(design);
                     let frame = document.getElementById('myFrame');
                 frame.contentWindow.location.reload();
 
@@ -303,7 +305,8 @@ formEl.addEventListener('submit', function(event) {
 
                 }
                 $("#types").select2();
-
+                $('#branch').text(myArray[0]);
+                $('#design').text(myArrays[0]);
                 
                 $("#table1").append(data.tablesdata);
                 $('#datatable_wrapper').DataTable({ 'responsive': true,  "columnDefs": [
