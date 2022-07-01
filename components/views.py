@@ -548,10 +548,25 @@ def savefile(request):
     rules = association_rules(frequent_itemsets, metric="lift", min_threshold=1)
     rules["antecedents"] = rules["antecedents"].apply(lambda x: ', '.join(list(x))).astype("unicode")
     rules["consequents"] = rules["consequents"].apply(lambda x: ', '.join(list(x))).astype("unicode")
+    
+    # rules["antecedentsupport"] = round(rules["antecedentsupport"], 2)
+    # rules["consequentsupport"] = round(rules["consequentsupport"], 2)
+    # rules["support"] = round(rules["support"], 2)
+    # rules["leverage"] = round(rules["leverage"], 2)
+    # rules["conviction"] = round(rules["conviction"], 2)
+   
     rules=rules.head(40)
     rules= rules.sort_values(by = 'confidence', ascending = False)
     #rules.columns = map(str.upper, rules.columns)
     rules.columns =["Antecedents","Consequents",'AntecedentSupport','ConsequentSupport',"Support","Confidence","Lift","Leverage","Conviction"]
+    #print(rules)
+    rules["AntecedentSupport"] = round(rules["AntecedentSupport"], 2)
+    rules["ConsequentSupport"] = round(rules["ConsequentSupport"], 2)
+    rules["Support"] = round(rules["Support"], 2)
+    rules["Lift"] = round(rules["Lift"], 2)
+    rules["Confidence"] = round(rules["Confidence"], 2)
+    rules["Leverage"] = round(rules["Leverage"], 2)
+    rules["Conviction"] = round(rules["Conviction"], 2)
     rules= rules.iloc[:, :-2]
     html_table = rules.to_html(justify=CENTER,index=False,classes="table table-bordered dt-responsive",table_id="datatable_wrapper")    
         
@@ -650,6 +665,13 @@ def savefile(request):
     rules= rules.sort_values(by = 'confidence', ascending = False)
     #rules.columns = map(str.upper, rules.columns)
     rules.columns =["Antecedents","Consequents",'AntecedentSupport','ConsequentSupport',"Support","Confidence","Lift","Leverage","Conviction"]
+    rules["AntecedentSupport"] = round(rules["AntecedentSupport"], 2)
+    rules["ConsequentSupport"] = round(rules["ConsequentSupport"], 2)
+    rules["Support"] = round(rules["Support"], 2)
+    rules["Lift"] = round(rules["Lift"], 2)
+    rules["Confidence"] = round(rules["Confidence"], 2)
+    rules["Leverage"] = round(rules["Leverage"], 2)
+    rules["Conviction"] = round(rules["Conviction"], 2)
     rules= rules.iloc[:, :-2]
 
     st.markdown(
@@ -688,6 +710,13 @@ def savefile(request):
 
     rules = association_rules(frequent_itemsets, metric = 'confidence', 
                                 min_threshold = 0.55)
+    rules["antecedent support"] = round(rules["antecedent support"], 2)
+    rules["consequent support"] = round(rules["consequent support"], 2)
+    rules["support"] = round(rules["support"], 2)
+    rules["lift"] = round(rules["lift"], 2)
+    rules["confidence"] = round(rules["confidence"], 2)
+    rules["leverage"] = round(rules["leverage"], 2)
+    rules["conviction"] = round(rules["conviction"], 2)
     html_table_2 = rules.to_html(justify=CENTER,index=False,classes="table table-bordered dt-responsive",table_id="datatable_wrapper_2") 
     # Convert rules into coordinates suitable for use in a parallel coordinates plot
     coords = rules_to_coordinates(rules.head(40))
