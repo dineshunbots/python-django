@@ -1,0 +1,18 @@
+on: [push]
+
+jobs:
+  deploy_job:
+    runs-on: ubuntu-latest
+    name: deploy
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: deploy file
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.3
+        with:
+          username: 'ubuntu'
+          server: '52.66.88.231'
+          ssh_private_key: ${{ secrets.TEST }} 
+          local_path: './python-django/*'
+          remote_path: '/home/ubuntu/myprojectdir/myproject'
+          sftpArgs: '-o ConnectTimeout=5'
