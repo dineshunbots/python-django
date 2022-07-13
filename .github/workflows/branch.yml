@@ -13,6 +13,6 @@ jobs:
           username: 'ubuntu'
           server: '52.66.88.231'
           ssh_private_key: ${{ secrets.TEST }} 
-          local_path: ''
+          local_path: './*'
           remote_path: '/home/ubuntu/myprojectdir/myproject'
           sftpArgs: '-o ConnectTimeout=5'
