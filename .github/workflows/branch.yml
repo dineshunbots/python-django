@@ -16,3 +16,9 @@ jobs:
           local_path: './*'
           remote_path: '/home/ubuntu/myprojectdir/myproject'
           sftpArgs: '-o ConnectTimeout=5'
+      - name: Run tests
+        run: |
+            source myprojectenv/bin/activate
+            sudo systemctl restart gunicorn
+            sudo systemctl restart nginx
+            
