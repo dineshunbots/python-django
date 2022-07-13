@@ -10,16 +10,15 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: ./home/ubuntu/myprojectdir/myproject
+        working-directory: ./dineshunbots/python-django
     steps:
     - uses: actions/checkout@v2
       with:
         fetch-depth: 2
 
-   
 
-    - name: FTP Deploy to WP Engine (Staging)
-      uses: ubuntu
+    - name: SFTP Deploy to WP Engine (Staging)
+      uses: wlixcc/SFTP-Deploy-Action@v1.2.3
       with:
         ftp-server: 52.66.88.231
         ftp-username: ubuntu
