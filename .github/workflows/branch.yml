@@ -16,6 +16,8 @@ jobs:
           local_path: './*'
           remote_path: '/home/ubuntu/myprojectdir/myproject'
           sftpArgs: '-o ConnectTimeout=5'    
-     
+      - name: Run tests
+        run: |
+              ls
       
             
