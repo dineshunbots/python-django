@@ -18,10 +18,8 @@ jobs:
           sftpArgs: '-o ConnectTimeout=5'    
       - name: Run tests
         run: |
-              ls
               cd ../
-              source myprojectenv/bin/activate
-              sudo systemctl restart gunicorn
-              sudo systemctl restart nginx
+              ls
+             
       
             
